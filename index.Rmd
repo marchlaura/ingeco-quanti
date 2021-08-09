@@ -1,0 +1,35 @@
+---
+title: "My Website"
+---
+
+Et hop, encore un site Web ! Réalisé avec RStudio et RMarkdown silvouplé
+s'il est encore nécessaire de prouver qu'avec R tout est possible.
+
+Ce site Web est réalisé à l'attention des étudiant.e.s du parcours
+Ingeco de l'AMU et rassemble les préoccupations R les plus couramment
+arrivées jusque dans mon bureau.
+
+Il existe déjà des tutoriels et blogs à foison. L'objectif ici est de
+coller au mieux à vos besoins :
+
+-   présentation des librairies indispensables à vos analyses
+
+-   liste de ressources pour aller plus loin
+
+-   rappel des bonnes pratiques pour bien s'organiser
+
+-   et surtout revoir ensemble les manipulations de base dans R
+
+    -   importer/exporter des tableaux Excel,
+
+    -   ajouter,renommer et modifier des variables,
+
+    -   sélectionner une sous partie de son tableau,
+
+    -   décrire ses données,
+
+    -   faire des beaux tableaux descriptif
+
+**Prérequis** : sur ce site, je ne reviens pas sur l'installation de R
+et RStudio et je considère que mes lecteur.trice.s sont familier.e.s de
+l'environnement RStudio
