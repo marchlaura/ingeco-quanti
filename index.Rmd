@@ -1,6 +1,19 @@
 ---
-title: "My Website"
+title: "Ingeco Quanti"
 ---
+
+```{r options, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
+if (Sys.info()["sysname"] == "Windows") {
+  Sys.setlocale("LC_TIME", "french")
+} else  {
+  Sys.setlocale("LC_TIME", "fr_FR");
+}
+require(lubridate)
+```
+
+<div class="alert alert-info">
+  <p>Dernière mise à jour : `r I(format(today(), "%e %B %Y"))`</p>
+</div>
 
 Et hop, encore un site Web ! Réalisé avec RStudio et RMarkdown silvouplé
 s'il est encore nécessaire de prouver qu'avec R tout est possible.
