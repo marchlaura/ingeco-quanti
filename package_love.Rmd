@@ -1,0 +1,121 @@
+---
+title: "un paquet de paquets"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+## Rappel : installer un package
+
+**Depuis le CRAN**
+
+```{r}
+install.packages("dplyr")
+```
+
+**Depuis GitHub**
+
+```{r}
+library(devtools)
+install_github("hadley/dplyr")
+```
+
+## Import/export de fichier Excel
+
+Je conseille les paquets `readxl` et `writexl`, faciles à installer.
+
+```{r eval=FALSE}
+library(readxl) # Import d'un fichier Excel
+library(writexl) # Export d'un fichier Excel
+```
+
+*Fonctions* : read_excel(),write_xlsx()
+
+Le paquet `xlsx` est également très utilisé et apporte davantage de fonctionnalités mais il vous faudra installer des dépendances (suivre les instructions), en particulier Java, pour des utilisateurs à l'aise en informatique.
+
+```{r eval=FALSE}
+library(xlsx) # fonctionnalités plus complètes
+```
+
+*Fonctions* : read.xlsx2(), write.xlsx2()
+
+## Manipuler ses données
+
+### Tidyverse
+
+Tidyverse est un package qui regroupe un ensemble de package qui facilitent considérablement la programmation en R.
+
+```{r eval=FALSE}
+library(tidyverse)
+```
+
+EST EQUIVALENT A :
+
+```{r}
+library(ggplot2) #Graphique
+library(dplyr) #Manipuler ses données
+library(tidyr) #Organiser ses données
+library(readr) #Lire des données
+library(purrr) #Programmation
+library(tibble) #Tableau de données (post data.frame)
+library(stringr) #Manipuler du texte
+library(forcats) #Manipuler des facteurs
+```
+
+Fonctions utiles :
+
+-   [*ggplot2*]{.ul} : ggplot()
+
+-   [*dplyr*]{.ul} : select(), rename(), mutate(), filter(), arrange(), group_by(), summary()
+
+-   [*tidyr*]{.ul}  : %\>%, pivot_longer(), pivot_wider()
+
+-   [*reader*]{.ul}  : read_csv()
+
+-   [*purrr*]{.ul}  : map()
+
+-   [*tibble*]{.ul}  : tibble(), tribble()
+
+-   [*stringr*]{.ul}  : str_lenght(), str_c(), str_replace(), str_to_lower(), str_to_upper()
+
+-   [*forcats*]{.ul} : fct_relevel(), fct_recode()
+
+### Autre
+
+Pour manipuler les dates, utiliser le package `lubridate`.
+```{r eval=FALSE}
+library(lubridate)
+```
+*Fonctions* : dmy(), ymd(), year(), month(),day()
+
+## Tableaux de fréquence 
+**(1, 2, 3 entrée.s)**
+
+```{r eval=FALSE}
+library(janitor)
+```
+*Fonctions* : tabyl()
+
+## Utilitaire
+La librairie R permet de créer des chemins relatifs. Par défaut R considère que les fichiers se trouvent dans les dossiers et sous-dossiers où se situe votre projet.
+```{r eval=FALSE}
+library(here)
+```
+*Fonctions* : here()
+
+## Rapport automatisé
+Pour créer des rapports automatisés : `rmarkdown`   
+Pour faire des beaux tableaux dans rmarkdown : `kableExtra`
+```{r eval=FALSE}
+library(rmarkdown)
+library(kableExtra)
+```
+*Fonctions rmarkdown* : render()  
+*Fonctions kableExtra* : kable_styling()
+
+## Stat

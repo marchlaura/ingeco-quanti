@@ -7,10 +7,18 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Start"
+      menu:
+        - text: "Package"
+          href: package_love.html
+        - text: "Organiser ses fichiers"
+          href: fichier_orga.html
+        - text: "Ressources"
+          href: ressources.html
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<laura.march@ird.fr>
-    - icon: fa-user
+    - icon: fa-smile-o 
       href: https://www.lped.fr/+-march-laura-366-+.html
 output:
   html_document:

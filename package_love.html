@@ -11,7 +11,7 @@
 
 
 
-<title>About This Website</title>
+<title>un paquet de paquets</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -220,6 +223,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -227,6 +293,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -293,15 +369,92 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About This Website</h1>
+<h1 class="title toc-ignore">un paquet de paquets</h1>
 
 </div>
 
 
-<p>More about this website.</p>
+<div id="rappel-installer-un-package" class="section level2">
+<h2>Rappel : installer un package</h2>
+<p><strong>Depuis le CRAN</strong></p>
+<pre class="r"><code>install.packages(&quot;dplyr&quot;)</code></pre>
+<p><strong>Depuis GitHub</strong></p>
+<pre class="r"><code>library(devtools)
+install_github(&quot;hadley/dplyr&quot;)</code></pre>
+</div>
+<div id="importexport-de-fichier-excel" class="section level2">
+<h2>Import/export de fichier Excel</h2>
+<p>Je conseille les paquets <code>readxl</code> et <code>writexl</code>, faciles à installer.</p>
+<pre class="r"><code>library(readxl) # Import d&#39;un fichier Excel
+library(writexl) # Export d&#39;un fichier Excel</code></pre>
+<p><em>Fonctions</em> : read_excel(),write_xlsx()</p>
+<p>Le paquet <code>xlsx</code> est également très utilisé et apporte davantage de fonctionnalités mais il vous faudra installer des dépendances (suivre les instructions), en particulier Java, pour des utilisateurs à l’aise en informatique.</p>
+<pre class="r"><code>library(xlsx) # fonctionnalités plus complètes</code></pre>
+<p><em>Fonctions</em> : read.xlsx2(), write.xlsx2()</p>
+</div>
+<div id="manipuler-ses-données" class="section level2">
+<h2>Manipuler ses données</h2>
+<div id="tidyverse" class="section level3">
+<h3>Tidyverse</h3>
+<p>Tidyverse est un package qui regroupe un ensemble de package qui facilitent considérablement la programmation en R.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>EST EQUIVALENT A :</p>
+<pre class="r"><code>library(ggplot2) #Graphique
+library(dplyr) #Manipuler ses données
+library(tidyr) #Organiser ses données
+library(readr) #Lire des données
+library(purrr) #Programmation
+library(tibble) #Tableau de données (post data.frame)
+library(stringr) #Manipuler du texte
+library(forcats) #Manipuler des facteurs</code></pre>
+<p>Fonctions utiles :</p>
+<ul>
+<li><p><u><em>ggplot2</em></u> : ggplot()</p></li>
+<li><p><u><em>dplyr</em></u> : select(), rename(), mutate(), filter(), arrange(), group_by(), summary()</p></li>
+<li><p><u><em>tidyr</em></u> : %&gt;%, pivot_longer(), pivot_wider()</p></li>
+<li><p><u><em>reader</em></u> : read_csv()</p></li>
+<li><p><u><em>purrr</em></u> : map()</p></li>
+<li><p><u><em>tibble</em></u> : tibble(), tribble()</p></li>
+<li><p><u><em>stringr</em></u> : str_lenght(), str_c(), str_replace(), str_to_lower(), str_to_upper()</p></li>
+<li><p><u><em>forcats</em></u> : fct_relevel(), fct_recode()</p></li>
+</ul>
+</div>
+<div id="autre" class="section level3">
+<h3>Autre</h3>
+<p>Pour manipuler les dates, utiliser le package <code>lubridate</code>.</p>
+<pre class="r"><code>library(lubridate)</code></pre>
+<p><em>Fonctions</em> : dmy(), ymd(), year(), month(),day()</p>
+</div>
+</div>
+<div id="tableaux-de-fréquence" class="section level2">
+<h2>Tableaux de fréquence</h2>
+<p><strong>(1, 2, 3 entrée.s)</strong></p>
+<pre class="r"><code>library(janitor)</code></pre>
+<p><em>Fonctions</em> : tabyl()</p>
+</div>
+<div id="utilitaire" class="section level2">
+<h2>Utilitaire</h2>
+<p>La librairie R permet de créer des chemins relatifs. Par défaut R considère que les fichiers se trouvent dans les dossiers et sous-dossiers où se situe votre projet.</p>
+<pre class="r"><code>library(here)</code></pre>
+<p><em>Fonctions</em> : here()</p>
+</div>
+<div id="rapport-automatisé" class="section level2">
+<h2>Rapport automatisé</h2>
+<p>Pour créer des rapports automatisés : <code>rmarkdown</code><br />
+Pour faire des beaux tableaux dans rmarkdown : <code>kableExtra</code></p>
+<pre class="r"><code>library(rmarkdown)
+library(kableExtra)</code></pre>
+<p><em>Fonctions rmarkdown</em> : render()<br />
+<em>Fonctions kableExtra</em> : kable_styling()</p>
+</div>
+<div id="stat" class="section level2">
+<h2>Stat</h2>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -334,6 +487,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

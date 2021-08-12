@@ -11,7 +11,7 @@
 
 
 
-<title>About This Website</title>
+<title>Bonnes pratiques</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -293,12 +293,74 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About This Website</h1>
+<h1 class="title toc-ignore">Bonnes pratiques</h1>
 
 </div>
 
 
-<p>More about this website.</p>
+<p>Quelques conseils avant de partir tête baissée dans le monde merveilleux de R.</p>
+<div id="organiser-ses-fichiers" class="section level2">
+<h2>Organiser ses fichiers</h2>
+<p>Exemple d’organisation de ses fichiers pour inspiration :<br />
+<img src="image/arborescence.png" width="25%" style="background-color: #9ecff7; padding:10px; display: inline-block;" /></p>
+<p>Pour chaque nouveau script, choisir un nom explicite et indiquer la date de création du fichier dans le nom :</p>
+<pre class="r"><code>20210707_Import_donnees_brute.R
+20210708_Corrections_donnes.R
+20210710_Creations_variables_analyse1.R
+20210711_Analyse1.R
+20210713_Analyse1_V2.R
+20210713_Creations_variables_analyse2.R
+20210717_Analyse2.R</code></pre>
+</div>
+<div id="organiser-son-code" class="section level2">
+<h2>Organiser son code</h2>
+<p>Dans chaque script R que vous rédigez :<br />
+- dans l’en-tête du script, indiquer la date de création du fichier, l’auteur.e, et l’objet du script<br />
+- dans votre code, commentez le déroulé de votre script (on oublie en moins de 2 jours)</p>
+<pre class="r"><code>################################################################
+# Auteur.e : Pocahontas
+# Date : 20 ajout 2021
+# Projet : Stage M2 Herbier
+# Objet : préparation des données pour l&#39;analyse
+################################################################
+
+#Import des librairies ----
+library(tidyverse)
+library(readxl)
+
+#Import des données
+donnees &lt;- read_excel(&quot;C:/User/Documents/releve_floristique_20200808.xlxs&quot;,sheet = &quot;Feuil1&quot;)
+
+#Manipulation de données
+donnees &lt;- donnees %&gt;% select(id,espece,gps,date,observateur)
+...</code></pre>
+<p>Astuce : Si votre script est long, vous pouvez générer une table des matières pour mieux naviguer dans le script (cliquer sur “show document outline” en haut à droite). Pour déclarer un titre, on ajoute 4 tirets du 6 (-) à la fin du commentaire.</p>
+<pre class="r"><code># Titre 1 Import des librairies ----
+
+# Titre 2 Correction des données ----
+
+# Titre 3 Création de variables ----</code></pre>
+</div>
+<div id="recherche-reproductible" class="section level2">
+<h2>Recherche reproductible</h2>
+<p>Lorsque vous analysez des données dans un fichier Excel, l’idéal est d’écrire l’ensemble des opérations effectuées sur vos données dans un ou des scripts (corrections de valeurs dans le fichier, recodage des données manquantes, création et modification de colonne, fonctions utilisées pour vos analyses). Dit autrement, on travaille à partir du fichier Excel des données brutes qui ne doit JAMAIS être modifié à la main, autrement on perd la traçabilité des modifications effectuées. L’idée c’est d’être toujours capable de reproduire ses résultats (figures, tableaux, analyses) pour pouvoir les vérifier, les réutiliser ou les partager. Le fichier Excel des données brutes associé à vos scripts doivent nous permettre de retrouver vos résultats à tout moment.</p>
+</div>
+<div id="préparer-son-fichier-excel" class="section level2">
+<h2>Préparer son fichier Excel</h2>
+<p>Pour faciliter le travail dans R de lecture de vos données dans Excel, quelques recommandations :<br />
+- des noms de colonnes courts, éviter les espaces et caractères spéciaux (les accents en particulier)<br />
+- mettre une seule information par colonne<br />
+- mettre une seule observation par ligne - si vous avez plusieurs niveau d’informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles) - éviter de mixer du texte et des chiffres dans une même colonne<br />
+- évitez les couleurs, elles ne seront pas lues dans R<br />
+- vous pouvez ajouter un onglet “Informations” ou “A”LIRE" dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données<br />
+- éviter les cellules fusionnées</p>
+</div>
+<div id="raccourci-clavier" class="section level2">
+<h2>Raccourci clavier</h2>
+<p>Pour exécuter le code R, un raccourci très pratique<br />
+- sous Windows &amp; Linux : <code>Ctrl+Enter</code><br />
+- sous Mac : <code>Cmd+Return</code></p>
+</div>
 
 
 

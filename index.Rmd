@@ -6,7 +6,8 @@ title: "Ingeco Quanti"
 if (Sys.info()["sysname"] == "Windows") {
   Sys.setlocale("LC_TIME", "french")
 } else  {
-  Sys.setlocale("LC_TIME", "fr_FR");
+  Sys.setlocale("LC_TIME", "fr_FR")
+  
 }
 require(lubridate)
 ```
@@ -33,13 +34,13 @@ coller au mieux à vos besoins :
 
 -   et surtout revoir ensemble les manipulations de base dans R
 
-    -   importer/exporter des tableaux Excel,
+    -   importer/exporter des tableaux Excel
 
-    -   ajouter,renommer et modifier des variables,
+    -   ajouter, renommer et modifier des variables
 
-    -   sélectionner une sous partie de son tableau,
+    -   sélectionner une sous partie de son tableau
 
-    -   décrire ses données,
+    -   décrire ses données
 
     -   faire des beaux tableaux descriptif
 
