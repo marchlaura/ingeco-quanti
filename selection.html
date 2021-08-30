@@ -11,7 +11,7 @@
 
 
 
-<title>Liste de ressources R</title>
+<title>selection.knit</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -224,6 +227,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -231,6 +297,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -318,7 +394,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Liste de ressources R</h1>
+<h1 class="title toc-ignore"><center>
+Excel : import - export
+</center></h1>
 
 </div>
 
@@ -327,36 +405,12 @@ $(document).ready(function () {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p><strong>Tutoriel pour les étudiant.e.s en écologie - très complet</strong></p>
-<ul>
-<li><a href="https://mtes-mct.github.io/parcours-r/" class="uri">https://mtes-mct.github.io/parcours-r/</a></li>
-</ul>
-<p><strong>Tutoriel et vidéos youtube - plus orienté sciences sociales</strong></p>
-<ul>
-<li><p><a href="https://larmarange.github.io/analyse-R/" class="uri">https://larmarange.github.io/analyse-R/</a></p></li>
-<li><p><a href="https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r" class="uri">https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r</a></p></li>
-</ul>
-<p><strong>Ressourcerie R</strong></p>
-<ul>
-<li><a href="https://rzine.fr/" class="uri">https://rzine.fr/</a></li>
-</ul>
-<p><strong>Blogs pour les curieux.ses</strong></p>
-<ul>
-<li><p><a href="http://perso.ens-lyon.fr/lise.vaudor/" class="uri">http://perso.ens-lyon.fr/lise.vaudor/</a></p></li>
-<li><p><a href="https://delladata.fr/liste-des-articles-du-blog/" class="uri">https://delladata.fr/liste-des-articles-du-blog/</a></p></li>
-</ul>
-<p><strong>Graphiques</strong> (codes à copier/coller, très pratique)</p>
-<ul>
-<li><a href="https://www.r-graph-gallery.com/" class="uri">https://www.r-graph-gallery.com/</a></li>
-</ul>
-<p><strong>Livres en français à emprunter dans mon bureau</strong></p>
-<ul>
-<li><p>Husson, François. 2018. <strong>R pour la statistique et la science des données</strong>. Pratique de la statistique. Rennes: Presses universitaires de Rennes. <a href="https://r-stat-sc-donnees.github.io/" class="uri">voir ici</a></p></li>
-<li><p>Husson, François, Sébastien Lê, et Jérôme Pagès. 2016. <strong>Analyse de données avec R</strong>. 2e éd. revue et Augmentée. Pratique de la statistique. Rennes: Presses universitaires de Rennes. <a href="http://math.agrocampus-ouest.fr/infoglueDeliverLive/enseignement/support2cours/livres/ana.do.R" class="uri">voir là</a></p></li>
-</ul>
+<p>WORK IN PROGRESS…</p>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -389,6 +443,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
