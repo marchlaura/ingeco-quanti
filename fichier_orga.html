@@ -32,6 +32,10 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -260,13 +264,34 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="package_love.html">&lt;link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet"&gt; Package</a>
+      <a href="package_love.html">Package</a>
     </li>
     <li>
       <a href="fichier_orga.html">Organiser ses fichiers</a>
     </li>
     <li>
       <a href="ressources.html">Ressources</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Préparation Données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="package_love.html">Excel : import-export</a>
+    </li>
+    <li>
+      <a href="fichier_orga.html">Renommer-Selectionner</a>
+    </li>
+    <li>
+      <a href="ressources.html">Modifier ses données</a>
+    </li>
+    <li>
+      <a href="ressources.html">Décrire ses données</a>
     </li>
   </ul>
 </li>
@@ -298,26 +323,23 @@ $(document).ready(function () {
 </div>
 
 
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
+</script>
 <p>Quelques conseils avant de partir tête baissée dans le monde merveilleux de R.</p>
 <div id="organiser-ses-fichiers" class="section level2">
 <h2>Organiser ses fichiers</h2>
 <p>Exemple d’organisation de ses fichiers pour inspiration :<br />
 <img src="image/arborescence.png" width="25%" style="background-color: #9ecff7; padding:10px; display: inline-block;" /></p>
-<p>Pour chaque nouveau script, choisir un nom explicite et indiquer la date de création du fichier dans le nom :</p>
-<pre class="r"><code>20210707_Import_donnees_brute.R
-20210708_Corrections_donnes.R
-20210710_Creations_variables_analyse1.R
-20210711_Analyse1.R
-20210713_Analyse1_V2.R
-20210713_Creations_variables_analyse2.R
-20210717_Analyse2.R</code></pre>
+<p>Pour chaque nouveau script, choisir un nom explicite et indiquer la date de création du fichier dans le nom : <code>20210707_Import_donnees_brute.R 20210708_Corrections_donnes.R 20210710_Creations_variables_analyse1.R 20210711_Analyse1.R 20210713_Analyse1_V2.R 20210713_Creations_variables_analyse2.R 20210717_Analyse2.R</code></p>
 </div>
 <div id="organiser-son-code" class="section level2">
 <h2>Organiser son code</h2>
 <p>Dans chaque script R que vous rédigez :<br />
 - dans l’en-tête du script, indiquer la date de création du fichier, l’auteur.e, et l’objet du script<br />
 - dans votre code, commentez le déroulé de votre script (on oublie en moins de 2 jours)</p>
-<pre class="r"><code>################################################################
+<pre class="r klippy"><code>################################################################
 # Auteur.e : Pocahontas
 # Date : 20 ajout 2021
 # Projet : Stage M2 Herbier
@@ -335,7 +357,7 @@ donnees &lt;- read_excel(&quot;C:/User/Documents/releve_floristique_20200808.xlx
 donnees &lt;- donnees %&gt;% select(id,espece,gps,date,observateur)
 ...</code></pre>
 <p>Astuce : Si votre script est long, vous pouvez générer une table des matières pour mieux naviguer dans le script (cliquer sur “show document outline” en haut à droite). Pour déclarer un titre, on ajoute 4 tirets du 6 (-) à la fin du commentaire.</p>
-<pre class="r"><code># Titre 1 Import des librairies ----
+<pre class="r klippy"><code># Titre 1 Import des librairies ----
 
 # Titre 2 Correction des données ----
 
@@ -352,7 +374,7 @@ donnees &lt;- donnees %&gt;% select(id,espece,gps,date,observateur)
 - mettre une seule information par colonne<br />
 - mettre une seule observation par ligne - si vous avez plusieurs niveau d’informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles) - éviter de mixer du texte et des chiffres dans une même colonne<br />
 - évitez les couleurs, elles ne seront pas lues dans R<br />
-- vous pouvez ajouter un onglet “Informations” ou “A”LIRE" dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données<br />
+- vous pouvez ajouter un onglet “Informations” ou “A LIRE” dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données<br />
 - éviter les cellules fusionnées</p>
 </div>
 <div id="raccourci-clavier" class="section level2">

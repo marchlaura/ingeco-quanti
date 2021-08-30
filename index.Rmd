@@ -1,5 +1,5 @@
 ---
-title: "Ingeco Quanti"
+title: "Ingeco-Quanti"
 ---
 
 ```{r options, results='hide', echo=FALSE, message=FALSE, warning=FALSE}
@@ -42,7 +42,7 @@ coller au mieux à vos besoins :
 
     -   décrire ses données
 
-    -   faire des beaux tableaux descriptif
+    -   faire des beaux tableaux descriptifs
 
 **Prérequis** : sur ce site, je ne reviens pas sur l'installation de R
 et RStudio et je considère que mes lecteur.trice.s sont familier.e.s de

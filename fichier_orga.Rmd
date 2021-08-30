@@ -3,8 +3,10 @@ title: "Bonnes pratiques"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,eval=F)
+```{r setup, include=T, echo=F}
+library(klippy)
+klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 ```
 
 Quelques conseils avant de partir tête baissée dans le monde merveilleux de R.
@@ -75,7 +77,7 @@ Pour faciliter le travail dans R de lecture de vos données dans Excel, quelques
 - si vous avez plusieurs niveau d'informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles)
 - éviter de mixer du texte et des chiffres dans une même colonne  
 - évitez les couleurs, elles ne seront pas lues dans R  
-- vous pouvez ajouter un onglet "Informations" ou "A"LIRE" dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données  
+- vous pouvez ajouter un onglet "Informations" ou "A LIRE" dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données  
 - éviter les cellules fusionnées  
 
 ## Raccourci clavier

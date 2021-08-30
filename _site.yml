@@ -15,6 +15,16 @@ navbar:
           href: fichier_orga.html
         - text: "Ressources"
           href: ressources.html
+    - text: "Préparation Données"
+      menu:
+        - text: "Excel : import-export"
+          href: excel.html
+        - text: "Renommer-Selectionner"
+          href: selection.html
+        - text: "Modifier ses données"
+          href: modifier.html
+        - text: "Décrire ses données"
+          href: decrire.html          
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<laura.march@ird.fr>

@@ -6,8 +6,10 @@ editor_options:
     wrap: 72
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=F)
+```{r setup, include=T, echo=F}
+library(klippy)
+klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 ```
 
 **Tutoriel pour les étudiant.e.s en écologie - très complet**
@@ -19,6 +21,10 @@ knitr::opts_chunk$set(echo = TRUE, eval=F)
 -   <https://larmarange.github.io/analyse-R/>
 
 -   <https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r>
+
+**Ressourcerie R**
+
+-   <https://rzine.fr/>
 
 **Blogs pour les curieux.ses**
 

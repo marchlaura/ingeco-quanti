@@ -3,3 +3,28 @@ title: "About This Website"
 ---
 
 More about this website.
+
+
+```{r setup,  echo=FALSE, include=TRUE}
+library(klippy)
+klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy')
+```
+
+## Rappel : installer un package
+
+**Depuis le CRAN**
+
+```{r klippy, echo=FALSE, include=TRUE}
+
+```
+
+
+```{r}
+summary(cars)
+```
+
+
+```{r,eval=F}
+cars
+```

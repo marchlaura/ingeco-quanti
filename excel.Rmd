@@ -1,0 +1,17 @@
+---
+title: "<center>Excel : import - export</center>"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=T, echo=F}
+library(klippy)
+klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
+```
+
+WORK IN PROGRESS...
+
+
