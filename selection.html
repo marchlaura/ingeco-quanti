@@ -329,9 +329,6 @@ div.tocify {
      
   </a>
 </li>
-<li>
-  <a href="about.html">About</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Start
@@ -361,10 +358,16 @@ div.tocify {
       <a href="excel.html">Excel : import-export</a>
     </li>
     <li>
-      <a href="selection.html">Renommer-Selectionner</a>
+      <a href="selection.html">Selection colonnes</a>
     </li>
     <li>
-      <a href="modifier.html">Modifier ses données</a>
+      <a href="modifier.html">Selection lignes</a>
+    </li>
+    <li>
+      <a href="conversion.html">Conversion</a>
+    </li>
+    <li>
+      <a href="missing.html">Donnees manquantes</a>
     </li>
     <li>
       <a href="decrire.html">Décrire ses données</a>
@@ -395,7 +398,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore"><center>
-Excel : import - export
+Selectionner vos variables
 </center></h1>
 
 </div>
@@ -405,7 +408,47 @@ Excel : import - export
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p>WORK IN PROGRESS…</p>
+<pre class="r klippy"><code>library(tidyverse)</code></pre>
+<p>Le package tidyverse fournit un ensemble de fonction pour sélectionner, renommer et réordonner les colonnes d’un tableau.</p>
+<p><strong>Utilisation du pipe : %&gt;%</strong></p>
+<p><span class="math display">\[ f(a) &lt;=&gt; a \,\text{ %&gt;% }\, f()\]</span></p>
+<p>Exemple :</p>
+<pre class="r klippy"><code>colnames(iris) # Nom des variables</code></pre>
+<p>est équivalent à</p>
+<pre class="r klippy"><code>iris %&gt;% colnames() # Nom des variables</code></pre>
+<div id="données" class="section level1">
+<h1>Données</h1>
+<p>On utilise le jeu de données <code>iris</code></p>
+<pre class="r klippy"><code>head(iris)     # Affichage des 6 premières lignes
+glimpse(iris)  # Descriptif des données
+colnames(iris) # Nom des variables</code></pre>
+</div>
+<div id="selectionner-select" class="section level1">
+<h1>Selectionner : select()</h1>
+<p>On sélectionne les variables Sepal.Length,Sepal.Width et Species. La table obtenue est affectée à l’objet <code>iris_selection</code></p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% select(Species,Sepal.Length,Sepal.Width)
+head(iris_selection)</code></pre>
+<p>On peut aussi garder toutes les variables et indiquer la liste des variables à supprimer grâce à l’opérateur de soustraction.</p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% select(-Sepal.Length,-Sepal.Width)
+head(iris_selection)</code></pre>
+</div>
+<div id="renommer-rename" class="section level1">
+<h1>Renommer : rename()</h1>
+<p>On renomme la variable Sepal.Length. Son nouveau nom est longueur_sepal. La table obtenue est affectée à l’objet <code>iris_selection</code></p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% rename(longueur_sepal=Sepal.Length)
+head(iris_selection)</code></pre>
+<p>Si le nom d’une variable contient un espace ou des caractères spéciaux, utiliser les guillemets.</p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% rename(&#39;longueur des petales&#39;=Sepal.Length)
+head(iris_selection)</code></pre>
+</div>
+<div id="réordonner-relocate" class="section level1">
+<h1>Réordonner : relocate()</h1>
+<p>Pour changer l’ordre des variables, on peut utiliser la fonction <code>relocate</code>.</p>
+<p><em>Exemple 1 : On place la variable Species en première position</em></p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% relocate(Species,1) </code></pre>
+<p><em>Exemple 2 : On place les variables Species et Sepal.Length après la variable Petal.Length</em></p>
+<pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% relocate(Species,Sepal.Length,.after=Petal.Length) </code></pre>
+</div>
 
 
 

@@ -5,8 +5,6 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
-    - text: "About"
-      href: about.html
     - text: "Start"
       menu:
         - text: "Package"
@@ -19,10 +17,14 @@ navbar:
       menu:
         - text: "Excel : import-export"
           href: excel.html
-        - text: "Renommer-Selectionner"
+        - text: "Selection colonnes"
           href: selection.html
-        - text: "Modifier ses données"
+        - text: "Selection lignes"
           href: modifier.html
+        - text: "Conversion"
+          href: conversion.html
+        - text: "Donnees manquantes"
+          href: missing.html
         - text: "Décrire ses données"
           href: decrire.html          
   right: 

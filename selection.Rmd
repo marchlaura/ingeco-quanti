@@ -1,5 +1,5 @@
 ---
-title: "<center>Excel : import - export</center>"
+title: "<center>Selectionner vos variables</center>"
 output: 
   html_document:
     toc: true
@@ -12,5 +12,83 @@ klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', t
 knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 ```
 
+```{r}
+library(tidyverse)
+```
 
-WORK IN PROGRESS...
+Le package tidyverse fournit un ensemble de fonction pour sélectionner, renommer et réordonner les colonnes d'un tableau.
+
+**Utilisation du pipe : %\>%**
+
+$$ f(a) <=> a \,\text{ %>% }\, f()$$
+
+Exemple :
+
+```{r}
+colnames(iris) # Nom des variables
+```
+
+est équivalent à
+
+```{r}
+iris %>% colnames() # Nom des variables
+```
+
+# Données
+
+On utilise le jeu de données `iris`
+
+```{r}
+head(iris)     # Affichage des 6 premières lignes
+glimpse(iris)  # Descriptif des données
+colnames(iris) # Nom des variables
+```
+
+# Selectionner : select()
+
+On sélectionne les variables Sepal.Length,Sepal.Width et Species. La table obtenue est affectée à l'objet `iris_selection`
+
+```{r}
+iris_selection <- iris %>% select(Species,Sepal.Length,Sepal.Width)
+head(iris_selection)
+```
+
+On peut aussi garder toutes les variables et indiquer la liste des variables à supprimer grâce à l'opérateur de soustraction.
+
+```{r}
+iris_selection <- iris %>% select(-Sepal.Length,-Sepal.Width)
+head(iris_selection)
+
+```
+
+# Renommer : rename()
+
+On renomme la variable Sepal.Length. Son nouveau nom est longueur_sepal. La table obtenue est affectée à l'objet `iris_selection`
+
+```{r}
+iris_selection <- iris %>% rename(longueur_sepal=Sepal.Length)
+head(iris_selection)
+```
+
+Si le nom d'une variable contient un espace ou des caractères spéciaux, utiliser les guillemets.
+
+```{r}
+iris_selection <- iris %>% rename('longueur des petales'=Sepal.Length)
+head(iris_selection)
+```
+
+# Réordonner : relocate()
+
+Pour changer l'ordre des variables, on peut utiliser la fonction `relocate`.
+
+*Exemple 1 : On place la variable Species en première position*
+
+```{r}
+iris_selection <- iris %>% relocate(Species,1) 
+```
+
+*Exemple 2 : On place les variables Species et Sepal.Length après la variable Petal.Length*
+
+```{r}
+iris_selection <- iris %>% relocate(Species,Sepal.Length,.after=Petal.Length) 
+```

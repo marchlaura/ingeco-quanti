@@ -1,5 +1,5 @@
 ---
-title: "<center>Un paquet de paquets</center>"
+title: "<center>Un paquet de paquets - LA base</center>"
 output: 
   html_document:
     toc: true
@@ -87,7 +87,7 @@ Fonctions utiles :
 
 -   [*forcats*]{.ul} : fct_relevel(), fct_recode()
 
-### Autre
+### Dates
 
 Pour manipuler les dates, utiliser le package `lubridate`.
 ```{r eval=FALSE}

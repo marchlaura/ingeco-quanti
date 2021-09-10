@@ -36,6 +36,10 @@ knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 
 -   <https://www.r-graph-gallery.com/>
 
+**Pense-bête - Cheatsheets**
+
+-   <https://www.rstudio.com/resources/cheatsheets/>
+
 **Livres en français à emprunter dans mon bureau**
 
 -   Husson, François. 2018. **R pour la statistique et la science des

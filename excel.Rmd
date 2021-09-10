@@ -12,6 +12,53 @@ klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', t
 knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 ```
 
-WORK IN PROGRESS...
+## Préparer son fichier Excel
+
+Pour faciliter le travail dans R de lecture de vos données dans Excel, quelques recommandations :  
+- des noms de colonnes courts, éviter les espaces et caractères spéciaux (les accents en particulier)  
+- mettre une seule information par colonne  
+- mettre une seule observation par ligne  
+- si vous avez plusieurs niveaux d'informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles)  
+- éviter de mixer du texte et des chiffres dans une même colonne  
+- évitez les couleurs, elles ne seront pas lues dans R  
+- vous pouvez ajouter un onglet "Informations" ou "A LIRE" dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données  
+- éviter les cellules fusionnées  
+
+
+## Importer son fichier dans R
+
+```{r}
+library(readxl) # Import de la librairie
+read_excel("C:/Users//Projet R/Donnees/monfichierexcel.xlsx",sheet="Feuil1") 
+```
+
+NB : mettre des slashs(/) pour séparer les dossiers et non des anti-slashs (\) pour Windows
+
+## Exporter un tableau R dans Excel
+
+Ici, on exporte le jeu de données `iris` installé par défaut dans R vers Excel.
+```{r}
+head(iris) #Visualise les 6 premières lignes du tableau iris
+library(writexl) # Import de la librairie
+write_excel(iris,"C:/Users/Projet R/Donnees/donnees_iris_de_R.xlsx")
+```
+
+NB1 : mettre des slashs(/) pour séparer les dossiers et non des anti-slashs (\) pour Windows  
+NB2 : Ici on exporte un jeu de données de R mais on peut exporter n'importe quel tableau de données (un tableau de résultat d'une régression par exemple) pourvu qu'il soit stocké dans un objet R approprié (dataframe, tibble...)
+
+## Le pakage xlsx : fonctionnalités import/export plus avancées
+
+Le paquet `xlsx` est également très utilisé et apporte davantage de fonctionnalités mais il vous faudra installer des dépendances (suivre les instructions du terminal), en particulier Java, ce qui provoque parfois des difficultés.
+
+Exemple :  
+1. On importe la librairie `xlsx`   
+2. On exporte les données `iris` dans le fichier Excel "donnéees_de_R.xlsx" dans l'onglet "iris"  
+3. On ajoute les données `cars` dans le fichier Excel "donnéees_de_R.xlsx" dans l'onglet "cars" sans écraser le fichier initial grâce à l'option `append=TRUE`  
+
+```{r eval=FALSE}
+library(xlsx) # Import de la librairie
+write.xlsx2(iris,"C:/Users/Projet R/Donnees/donnees_de_R.xlsx",sheetName="iris") 
+write.xlsx2(cars,"C:/Users/Projet R/Donnees/donnees_R.xlsx",sheetName="cars",append=TRUE)
+```
 
 

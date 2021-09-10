@@ -253,9 +253,6 @@ $(document).ready(function () {
      
   </a>
 </li>
-<li>
-  <a href="about.html">About</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Start
@@ -285,10 +282,16 @@ $(document).ready(function () {
       <a href="excel.html">Excel : import-export</a>
     </li>
     <li>
-      <a href="selection.html">Renommer-Selectionner</a>
+      <a href="selection.html">Selection colonnes</a>
     </li>
     <li>
-      <a href="modifier.html">Modifier ses données</a>
+      <a href="modifier.html">Selection lignes</a>
+    </li>
+    <li>
+      <a href="conversion.html">Conversion</a>
+    </li>
+    <li>
+      <a href="missing.html">Donnees manquantes</a>
     </li>
     <li>
       <a href="decrire.html">Décrire ses données</a>
@@ -379,7 +382,7 @@ donnees &lt;- donnees %&gt;% select(id,espece,gps,date,observateur)
 <p>Pour faciliter le travail dans R de lecture de vos données dans Excel, quelques recommandations :<br />
 - des noms de colonnes courts, éviter les espaces et caractères spéciaux (les accents en particulier)<br />
 - mettre une seule information par colonne<br />
-- mettre une seule observation par ligne - si vous avez plusieurs niveau d’informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles) - éviter de mixer du texte et des chiffres dans une même colonne<br />
+- mettre une seule observation par ligne - si vous avez plusieurs niveaux d’informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles) - éviter de mixer du texte et des chiffres dans une même colonne<br />
 - évitez les couleurs, elles ne seront pas lues dans R<br />
 - vous pouvez ajouter un onglet “Informations” ou “A LIRE” dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données<br />
 - éviter les cellules fusionnées</p>
