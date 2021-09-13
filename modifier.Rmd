@@ -1,0 +1,84 @@
+---
+title: "<center>Selectionner des lignes</center>"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=T, echo=F}
+library(klippy)
+klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+Pour sélectionner les lignes d'un tableau on utilise la fonction `filter` du package `tidyverse`. Le package permet également d'utiliser le pipe `%>%`.
+
+**Utilisation du pipe : %\>%**
+
+$$ f(a) <=> a \,\text{ %>% }\, f()$$
+
+Exemple :
+
+```{r}
+colnames(iris) # Nom des variables
+```
+
+est équivalent à
+
+```{r}
+iris %>% colnames() # Nom des variables
+```
+
+# Selectionner : select()
+
+Exemple 1 . On sélectionne les observations pour lesquelles la taille des sépales est supérieure ou égale à 5. La table obtenue est affectée à l'objet `iris_selection`
+
+```{r}
+iris_selection <- iris %>% filter(Sepal.Length>=5)
+head(iris_selection)
+```
+
+Exemple 2 . On sélectionne les observations de l'espèce setosa. La table obtenue est affectée à l'objet `iris_selection`.\
+NB1 : on met des guillemets pour désigner du texte.\
+NB2 : quand on teste une égalité de condition, il faut utiliser le double égal `==`, c'est l'erreur la plus courante chez les jeunes utilisateurs de R.
+
+```{r}
+iris_selection <- iris %>% filter(Species=="setosa")
+head(iris_selection)
+```
+
+Exemple 3. Conditions multiples. On sélectionne les observations de l'espèce setosa si la largeur des sépales est supérieure à 3 ainsi que l'espèce versicolor. La table obtenue est affectée à l'objet `iris_selection`.
+
+NB : liste d'opérateurs logique
+
+| Opérateurs dans R | Def               |
+|:-----------------:|:------------------|
+|         &         | ET                |
+|        \|         | OU                |
+|        ==         | EGAL              |
+|        \>         | SUPERIEUR         |
+|        \>=        | SUPERIEUR ou EGAL |
+|        \<         | INFERIEUR         |
+|        \<=        | INFERIEUR ou EGAL |
+|      is.na()      | EST MANQUANT      |
+|         !         | DIFFERENT DE ≠    |
+|                   |                   |
+
+```{r}
+iris_selection <- iris %>% filter((Species=="setosa" & Sepal.Width>3) | Species=="versicolor")
+head(iris_selection)
+```
+
+Exemple 4. Enchainer les opérations. On sélectionne les observations de l'espèce setosa. Puis on selectionnerles observations pour lesquelles la largeur des sépales est supérieure à 3r. La table obtenue est affectée à l'objet `iris_selection`.
+
+```{r}
+iris_selection <- iris %>% 
+  filter(Species=="setosa") %>%
+  filter(Sepal.Width>3)
+head(iris_selection)
+```
