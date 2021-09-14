@@ -398,7 +398,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore"><center>
-Excel : import - export
+Conversion de données
 </center></h1>
 
 </div>
@@ -408,7 +408,214 @@ Excel : import - export
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p>WORK IN PROGRESS…</p>
+<p>Les données importées depuis Excel sont le plus souvent soit du texte, soit des données numériques soit des dates. Il convient de vérifier la structure des données importées et de les convertir si besoin. Des données numériques ou des dates ont pu être interprétées en texte par exemple.</p>
+<div id="type-des-données-dun-tableau-str" class="section level1">
+<h1>Type des données d’un tableau : str()</h1>
+<p>La fonction str() renvoie le type des variables de votre tableau.</p>
+<p>NB : les principaux types</p>
+<ul>
+<li>num : données numériques (stockées sous forme de décimales)</li>
+<li>int : données numériques (stockées sous forme d’entier)</li>
+<li>Date</li>
+<li>char : texte</li>
+<li>factor : variables catégorielles (ex : 1=femme, 2=homme)</li>
+</ul>
+<pre class="r klippy"><code>str(iris)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div id="conversion" class="section level1">
+<h1>Conversion</h1>
+<p>Les fonctions suivantes permettent de convertir vos données</p>
+<ul>
+<li>as.numeric()</li>
+<li>as.integer()</li>
+<li>as.character()</li>
+<li>[librairie tidyverse - forcats] as_factor(), factor()</li>
+<li>[librairie lubridate] ymd(), dmy(), mdy()</li>
+</ul>
+<p>Je créé des données fictives possiblement issues de Excel avec les problèmes les plus couramment rencontrés.</p>
+<ul>
+<li>La variable identifiant contient une donnée manquante NULL ce qui fait qu’au moment de l’import, la variable est considérée comme du texte.<br />
+</li>
+<li>Les dates de naissances ont été importées en texte et non en date.<br />
+</li>
+<li>La taille a été importées en texte à cause de la virgule qui sépare les décimales. Dans R, le séparateur de décimal est un point, il n’a donc pas reconnu la variable comme contenant du numeric.</li>
+</ul>
+<pre class="r klippy"><code>library(tidyverse)
+fic_excel_fictif &lt;- 
+  tibble(
+    id=c(&quot;1&quot;,&quot;2&quot;,&quot;NULL&quot;,&quot;4&quot;,&quot;5&quot;),
+    sexe=c(1,1,2,2,1),
+    ddn=c(&quot;01/01/2020&quot;,&quot;01/02/2020&quot;,&quot;02/01/2020&quot;,&quot;01/05/2020&quot;,&quot;01/06/2020&quot;),
+    taille=c(&quot;1,23&quot;,&quot;1,22&quot;,&quot;1,43&quot;, &quot;1,32&quot;,&quot;1,12&quot;),
+    ville=c(&quot;Montpellier&quot;,&quot;Marseille&quot;,&quot;Marseille&quot;,&quot;Paris&quot;,&quot;Lyon&quot;)
+  )
+fic_excel_fictif</code></pre>
+<pre><code>## # A tibble: 5 x 5
+##   id     sexe ddn        taille ville      
+##   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
+## 1 1         1 01/01/2020 1,23   Montpellier
+## 2 2         1 01/02/2020 1,22   Marseille  
+## 3 NULL      2 02/01/2020 1,43   Marseille  
+## 4 4         2 01/05/2020 1,32   Paris      
+## 5 5         1 01/06/2020 1,12   Lyon</code></pre>
+<pre class="r klippy"><code>str(fic_excel_fictif)</code></pre>
+<pre><code>## tibble [5 x 5] (S3: tbl_df/tbl/data.frame)
+##  $ id    : chr [1:5] &quot;1&quot; &quot;2&quot; &quot;NULL&quot; &quot;4&quot; ...
+##  $ sexe  : num [1:5] 1 1 2 2 1
+##  $ ddn   : chr [1:5] &quot;01/01/2020&quot; &quot;01/02/2020&quot; &quot;02/01/2020&quot; &quot;01/05/2020&quot; ...
+##  $ taille: chr [1:5] &quot;1,23&quot; &quot;1,22&quot; &quot;1,43&quot; &quot;1,32&quot; ...
+##  $ ville : chr [1:5] &quot;Montpellier&quot; &quot;Marseille&quot; &quot;Marseille&quot; &quot;Paris&quot; ...</code></pre>
+<div id="exemple-1-texte-vers-entier" class="section level2">
+<h2>Exemple 1 : texte vers entier</h2>
+<p>NB : la fonction <code>mutate</code> permet de modifier une variable / colonne ou d’ajouter une nouvelle variable/colonne.<br />
+Commentaire code :</p>
+<ul>
+<li>ligne na_if : On indique que la valeur texte NULL doit être remplacée par une données manquante</li>
+<li>ligne as.integer : On convertit la variable id avec la fonction as.integer(). La nouvelle variable s’appelle id_numeric</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif %&gt;% 
+  mutate(id=na_if(id,&quot;NULL&quot;)) %&gt;%       
+  mutate(id_numeric=as.integer(id)) %&gt;%
+  relocate(id,id_numeric)       
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   id    id_numeric  sexe ddn        taille ville      
+##   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
+## 1 1              1     1 01/01/2020 1,23   Montpellier
+## 2 2              2     1 01/02/2020 1,22   Marseille  
+## 3 &lt;NA&gt;          NA     2 02/01/2020 1,43   Marseille  
+## 4 4              4     2 01/05/2020 1,32   Paris      
+## 5 5              5     1 01/06/2020 1,12   Lyon</code></pre>
+</div>
+<div id="exemple-2-texte-vers-décimal" class="section level2">
+<h2>Exemple 2 : texte vers décimal</h2>
+<p>Commentaire code :</p>
+<ul>
+<li>ligne str_replace : On remplace les virgules par des points</li>
+<li>ligne as.integer : On convertit la variable taille avec la fonction as.integer(). La nouvelle variable s’appelle taille_numeric</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif %&gt;% 
+  mutate(taille=str_replace(taille,&quot;,&quot;,&quot;.&quot;)) %&gt;%
+  mutate(taille_numeric=as.integer(taille)) %&gt;% 
+  relocate(taille,taille_numeric)               
+
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   taille taille_numeric id     sexe ddn        ville      
+##   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
+## 1 1.23                1 1         1 01/01/2020 Montpellier
+## 2 1.22                1 2         1 01/02/2020 Marseille  
+## 3 1.43                1 NULL      2 02/01/2020 Marseille  
+## 4 1.32                1 4         2 01/05/2020 Paris      
+## 5 1.12                1 5         1 01/06/2020 Lyon</code></pre>
+</div>
+<div id="exemple-3-texte-vers-date" class="section level2">
+<h2>Exemple 3 : texte vers date</h2>
+<p>NB : dans l’exemple on utilise la fonction dmy() car les dates texte sont sous le format JJ/MM/AAAA. Pour un format américain MM/JJ/AAAA, on utiliserait la fonction mdy(). Pour un format ‘à l’envers’ AAAA/MM/JJ on utiliserait ymd().</p>
+<p>Commentaire code :</p>
+<ul>
+<li>ligne dmy : On convertit la variable ddn avec la fonction dmy(). La nouvelle variable s’appelle ddn_format</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>library(lubridate)
+fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif %&gt;% 
+  mutate(ddn_format=dmy(ddn)) %&gt;%  
+  relocate(ddn,ddn_format)
+
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   ddn        ddn_format id     sexe taille ville      
+##   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;      
+## 1 01/01/2020 2020-01-01 1         1 1,23   Montpellier
+## 2 01/02/2020 2020-02-01 2         1 1,22   Marseille  
+## 3 02/01/2020 2020-01-02 NULL      2 1,43   Marseille  
+## 4 01/05/2020 2020-05-01 4         2 1,32   Paris      
+## 5 01/06/2020 2020-06-01 5         1 1,12   Lyon</code></pre>
+</div>
+<div id="exemple-4-texte-vers-facteur" class="section level2">
+<h2>Exemple 4 : texte vers facteur</h2>
+<p>NB : on convertit rarement une variable texte en facteur car R considère par défaut une variable texte comme une variable catégorielle. Mais cela peut être utile si on veut changer une valeur de référence dans un modèle logistic par exemple.</p>
+<p>Commentaire code :</p>
+<ul>
+<li>ligne as_factor : On convertit la variable ville en facteur</li>
+<li>ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif %&gt;% 
+  mutate(ville_facteur=as_factor(ville)) %&gt;% 
+  mutate(ville_facteur_ref=fct_relevel(ville_facteur,c(&quot;Paris&quot;)))  %&gt;%  
+  relocate(ville,ville_facteur,ville_facteur_ref) 
+
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 7
+##   ville       ville_facteur ville_facteur_ref id     sexe ddn        taille
+##   &lt;chr&gt;       &lt;fct&gt;         &lt;fct&gt;             &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; 
+## 1 Montpellier Montpellier   Montpellier       1         1 01/01/2020 1,23  
+## 2 Marseille   Marseille     Marseille         2         1 01/02/2020 1,22  
+## 3 Marseille   Marseille     Marseille         NULL      2 02/01/2020 1,43  
+## 4 Paris       Paris         Paris             4         2 01/05/2020 1,32  
+## 5 Lyon        Lyon          Lyon              5         1 01/06/2020 1,12</code></pre>
+</div>
+<div id="exemple-5-entier-vers-facteur" class="section level2">
+<h2>Exemple 5 : entier vers facteur</h2>
+<p>NB : la conversion de la variable numeric en facteur va permettre d’indiquer à R de considérer la variable comme une variable catégorielle et non comme une variable numéric.</p>
+<p>Commentaire code :</p>
+<ul>
+<li>ligne factor : On convertit la variable sexe en facteur et on ajoute les labels associés aux valeurs</li>
+<li>ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif %&gt;% 
+  mutate(sexe_facteur=factor(sexe,levels=c(1,2),labels=c(&quot;femme&quot;,&quot;homme&quot;))) %&gt;% 
+  mutate(sexe_facteur_ref=fct_relevel(sexe_facteur,c(&quot;homme&quot;,&quot;femme&quot;)))  %&gt;%  
+  relocate(sexe,sexe_facteur,sexe_facteur_ref) 
+
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 7
+##    sexe sexe_facteur sexe_facteur_ref id    ddn        taille ville      
+##   &lt;dbl&gt; &lt;fct&gt;        &lt;fct&gt;            &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
+## 1     1 femme        femme            1     01/01/2020 1,23   Montpellier
+## 2     1 femme        femme            2     01/02/2020 1,22   Marseille  
+## 3     2 homme        homme            NULL  02/01/2020 1,43   Marseille  
+## 4     2 homme        homme            4     01/05/2020 1,32   Paris      
+## 5     1 femme        femme            5     01/06/2020 1,12   Lyon</code></pre>
+</div>
+<div id="exemple-6-facteur-ou-numeric-vers-texte-as.character" class="section level2">
+<h2>Exemple 6 : facteur ou numeric vers texte –&gt; as.character()</h2>
+<p>Commentaire code :</p>
+<ul>
+<li>ligne as.character : On convertit la variable sexe_facteur en texte</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+</ul>
+<pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
+  fic_excel_fictif_modif %&gt;% 
+  mutate(sexe_texte=as.character(sexe_facteur)) %&gt;% 
+  relocate(sexe,sexe_texte,sexe_facteur)
+
+fic_excel_fictif_modif</code></pre>
+<pre><code>## # A tibble: 5 x 8
+##    sexe sexe_texte sexe_facteur sexe_facteur_ref id    ddn       taille ville   
+##   &lt;dbl&gt; &lt;chr&gt;      &lt;fct&gt;        &lt;fct&gt;            &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;   
+## 1     1 femme      femme        femme            1     01/01/20~ 1,23   Montpel~
+## 2     1 femme      femme        femme            2     01/02/20~ 1,22   Marseil~
+## 3     2 homme      homme        homme            NULL  02/01/20~ 1,43   Marseil~
+## 4     2 homme      homme        homme            4     01/05/20~ 1,32   Paris   
+## 5     1 femme      femme        femme            5     01/06/20~ 1,12   Lyon</code></pre>
+</div>
+</div>
 
 
 

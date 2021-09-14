@@ -1,5 +1,5 @@
 ---
-title: "<center>Excel : import - export</center>"
+title: "<center>Conversion de données</center>"
 output: 
   html_document:
     toc: true
@@ -9,8 +9,169 @@ output:
 ```{r setup, include=T, echo=F}
 library(klippy)
 klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
-knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',warning = F,message = F)
 ```
 
+Les données importées depuis Excel sont le plus souvent soit du texte, soit des données numériques soit des dates. Il convient de vérifier la structure des données importées et de les convertir si besoin. Des données numériques ou des dates ont pu être interprétées en texte par exemple.
 
-WORK IN PROGRESS...
+# Type des données d'un tableau : str()
+
+La fonction str() renvoie le type des variables de votre tableau.
+
+NB : les principaux types
+
+-   num : données numériques (stockées sous forme de décimales)
+-   int : données numériques (stockées sous forme d'entier)
+-   Date
+-   char : texte
+-   factor : variables catégorielles (ex : 1=femme, 2=homme)
+
+```{r}
+str(iris)
+```
+
+# Conversion
+
+Les fonctions suivantes permettent de convertir vos données 
+
+-   as.numeric()
+-   as.integer()
+-   as.character()
+-   [librairie tidyverse - forcats] as_factor(), factor()
+-   [librairie lubridate] ymd(), dmy(), mdy()
+
+Je créé des données fictives possiblement issues de Excel avec les problèmes les plus couramment rencontrés. 
+
+-   La variable identifiant contient une donnée manquante NULL ce qui fait qu'au moment de l'import, la variable est considérée comme du texte.  
+-   Les dates de naissances ont été importées en texte et non en date.  
+-   La taille a été importées en texte à cause de la virgule qui sépare les décimales. Dans R, le séparateur de décimal est un point, il n'a donc pas reconnu la variable comme contenant du numeric.  
+
+```{r}
+library(tidyverse)
+fic_excel_fictif <- 
+  tibble(
+    id=c("1","2","NULL","4","5"),
+    sexe=c(1,1,2,2,1),
+    ddn=c("01/01/2020","01/02/2020","02/01/2020","01/05/2020","01/06/2020"),
+    taille=c("1,23","1,22","1,43", "1,32","1,12"),
+    ville=c("Montpellier","Marseille","Marseille","Paris","Lyon")
+  )
+fic_excel_fictif
+str(fic_excel_fictif)
+```
+
+## Exemple 1 : texte vers entier
+
+NB : la fonction `mutate` permet de modifier une variable / colonne ou d'ajouter une nouvelle variable/colonne.  
+Commentaire code :
+
+-   ligne na_if :  On indique que la valeur texte NULL doit être remplacée par une données manquante
+-   ligne as.integer : On convertit la variable id avec la fonction as.integer(). La nouvelle variable s'appelle id_numeric
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+```{r}
+fic_excel_fictif_modif <- 
+  fic_excel_fictif %>% 
+  mutate(id=na_if(id,"NULL")) %>%       
+  mutate(id_numeric=as.integer(id)) %>%
+  relocate(id,id_numeric)       
+fic_excel_fictif_modif
+```
+
+## Exemple 2 : texte vers décimal
+
+Commentaire code :
+
+-   ligne str_replace :  On remplace les virgules par des points
+-   ligne as.integer : On convertit la variable taille avec la fonction as.integer(). La nouvelle variable s'appelle taille_numeric
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+
+```{r}
+fic_excel_fictif_modif <- 
+  fic_excel_fictif %>% 
+  mutate(taille=str_replace(taille,",",".")) %>%
+  mutate(taille_numeric=as.integer(taille)) %>% 
+  relocate(taille,taille_numeric)               
+
+fic_excel_fictif_modif
+```
+
+## Exemple 3 : texte vers date
+
+NB : dans l'exemple on utilise la fonction dmy() car les dates texte sont sous le format JJ/MM/AAAA. Pour un format américain MM/JJ/AAAA, on utiliserait la fonction mdy(). Pour un format 'à l'envers' AAAA/MM/JJ on utiliserait ymd().  
+
+Commentaire code :
+
+-   ligne dmy : On convertit la variable ddn avec la fonction dmy(). La nouvelle variable s'appelle ddn_format
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+
+```{r}
+library(lubridate)
+fic_excel_fictif_modif <- 
+  fic_excel_fictif %>% 
+  mutate(ddn_format=dmy(ddn)) %>%  
+  relocate(ddn,ddn_format)
+
+fic_excel_fictif_modif
+```
+
+## Exemple 4 : texte vers facteur
+
+NB : on convertit rarement une variable texte en facteur car R considère par défaut une variable texte comme une variable catégorielle. Mais cela peut être utile si on veut changer une valeur de référence dans un modèle logistic par exemple.  
+
+Commentaire code :
+
+-   ligne as_factor : On convertit la variable ville en facteur
+-   ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+
+```{r}
+fic_excel_fictif_modif <- 
+  fic_excel_fictif %>% 
+  mutate(ville_facteur=as_factor(ville)) %>% 
+  mutate(ville_facteur_ref=fct_relevel(ville_facteur,c("Paris")))  %>%  
+  relocate(ville,ville_facteur,ville_facteur_ref) 
+
+fic_excel_fictif_modif
+```
+
+## Exemple 5 : entier vers facteur
+
+NB : la conversion de la variable numeric en facteur va permettre d'indiquer à R de considérer la variable comme une variable catégorielle et non comme une variable numéric.  
+
+Commentaire code :
+
+-   ligne factor :  On convertit la variable sexe en facteur et on ajoute les labels associés aux valeurs
+-   ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+
+```{r}
+fic_excel_fictif_modif <- 
+  fic_excel_fictif %>% 
+  mutate(sexe_facteur=factor(sexe,levels=c(1,2),labels=c("femme","homme"))) %>% 
+  mutate(sexe_facteur_ref=fct_relevel(sexe_facteur,c("homme","femme")))  %>%  
+  relocate(sexe,sexe_facteur,sexe_facteur_ref) 
+
+fic_excel_fictif_modif
+```
+
+## Exemple 6 : facteur ou numeric vers texte --> as.character()
+
+Commentaire code :
+
+-   ligne as.character : On convertit la variable sexe_facteur en texte
+-   ligne relocate : On réordonne l'ordre des variables pour mettre côte à côte l'ancienne et la nouvelle variable
+
+
+```{r}
+fic_excel_fictif_modif <- 
+  fic_excel_fictif_modif %>% 
+  mutate(sexe_texte=as.character(sexe_facteur)) %>% 
+  relocate(sexe,sexe_texte,sexe_facteur)
+
+fic_excel_fictif_modif
+```

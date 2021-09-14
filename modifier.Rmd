@@ -9,7 +9,7 @@ output:
 ```{r setup, include=T, echo=F}
 library(klippy)
 klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
-knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',message = F,warning = F)
 ```
 
 ```{r}
@@ -24,35 +24,38 @@ $$ f(a) <=> a \,\text{ %>% }\, f()$$
 
 Exemple :
 
-```{r}
+```{r,eval=FALSE}
 colnames(iris) # Nom des variables
 ```
 
 est équivalent à
 
-```{r}
+```{r,eval=FALSE}
 iris %>% colnames() # Nom des variables
 ```
 
 # Selectionner : select()
 
-Exemple 1 . On sélectionne les observations pour lesquelles la taille des sépales est supérieure ou égale à 5. La table obtenue est affectée à l'objet `iris_selection`
+## Ex1. Condition variable numérique.   
+On sélectionne les observations pour lesquelles la taille des sépales est supérieure ou égale à 5. La table obtenue est affectée à l'objet `iris_selection`
 
 ```{r}
 iris_selection <- iris %>% filter(Sepal.Length>=5)
 head(iris_selection)
 ```
 
-Exemple 2 . On sélectionne les observations de l'espèce setosa. La table obtenue est affectée à l'objet `iris_selection`.\
+## Ex2. Condition variable texte.  
+On sélectionne les observations de l'espèce virginica. La table obtenue est affectée à l'objet `iris_selection`.\
 NB1 : on met des guillemets pour désigner du texte.\
 NB2 : quand on teste une égalité de condition, il faut utiliser le double égal `==`, c'est l'erreur la plus courante chez les jeunes utilisateurs de R.
 
 ```{r}
-iris_selection <- iris %>% filter(Species=="setosa")
+iris_selection <- iris %>% filter(Species=="virginica")
 head(iris_selection)
 ```
 
-Exemple 3. Conditions multiples. On sélectionne les observations de l'espèce setosa si la largeur des sépales est supérieure à 3 ainsi que l'espèce versicolor. La table obtenue est affectée à l'objet `iris_selection`.
+## Ex3. Conditions multiples.  
+On sélectionne les observations de l'espèce setosa si la largeur des sépales est supérieure à 3 ainsi que l'espèce versicolor. La table obtenue est affectée à l'objet `iris_selection`.
 
 NB : liste d'opérateurs logique
 
@@ -74,7 +77,8 @@ iris_selection <- iris %>% filter((Species=="setosa" & Sepal.Width>3) | Species=
 head(iris_selection)
 ```
 
-Exemple 4. Enchainer les opérations. On sélectionne les observations de l'espèce setosa. Puis on selectionnerles observations pour lesquelles la largeur des sépales est supérieure à 3r. La table obtenue est affectée à l'objet `iris_selection`.
+## Ex4. Enchainer les opérations.  
+On sélectionne les observations de l'espèce setosa. Puis on selectionnerles observations pour lesquelles la largeur des sépales est supérieure à 3. La table obtenue est affectée à l'objet `iris_selection`.
 
 ```{r}
 iris_selection <- iris %>% 
