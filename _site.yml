@@ -25,7 +25,7 @@ navbar:
           href: conversion.html
         - text: "Donnees manquantes"
           href: missing.html
-        - text: "Décrire ses données"
+        - text: "Modifier-Ajouter colonne"
           href: decrire.html          
   right: 
     - icon: fa-envelope fa-lg

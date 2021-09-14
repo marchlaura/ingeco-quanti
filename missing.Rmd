@@ -1,5 +1,5 @@
 ---
-title: "<center>Excel : import - export</center>"
+title: "Donnees manquantes"
 output: 
   html_document:
     toc: true
@@ -13,4 +13,54 @@ knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
 ```
 
 
-WORK IN PROGRESS...
+EN CONSTRUCTION
+
+La gestion des données manquantes dans R est centrale et peut entraîner d'importantes erreurs. 
+R considère une donnée comme manquante si elle est codée en NA. Si vous avez des variables texte avec écrit "manquant", "missing" ou même un blanc comme " " ou "", R n’interprétera pas ces valeurs comme des données manquantes mais comme des valeurs. C'est à vous des convertir ces valeurs en NA pour qu'elles soient automatiquement considérées comme manquantes par R.
+
+# Principales difficultés
+
+Les principales difficultés autour des données manquantes :
+
+-    certaines fonctions renvoient une erreur en présence de données manquantes, il faut alors bien préciser en paramètre la présence de données manquantes ;
+-    lorsqu'on écrit une condition (pour sélectionner des observations par exemple), il faut impérativement tenir compte de la présence de données manquantes
+-    si vous faites des modèles statistiques, toutes les observations contenant au moins une donnée manquante parmi la variable à expliquer et les variables explicatives ne seront pas prise en compte dans l'analyse ; 
+
+Exemple de difficultés :
+
+```{r}
+summary(airquality)
+iris %>% summarise(moyenne=mean(Sepal.Width))
+airquality %>% summarise(moyenne=mean(Ozone))
+airquality %>% summarise(moyenne=mean(Ozone,na.rm = TRUE))
+```
+
+```{r}
+airquality %>% filter(Solar.R<20)
+airquality %>% filter(Solar.R<20 | is.na(Solar.R))
+```
+
+
+
+
+
+```{r}
+lm(Ozone ~ Solar.R +  Wind,data = airquality) %>% summary()
+airquality %>% select(Ozone,Solar.R,Wind) %>% lm(Ozone ~ Solar.R +  Wind,data = .) %>% summary()
+airquality %>% count()
+airquality %>% select(Ozone,Solar.R,Wind) %>% complete.cases() %>% sum()
+airquality %>% mutate(in_model=complete.cases(.))
+airquality %>% mutate(in_model=complete.cases(across(c(Ozone,Wind))))
+```
+
+# Manipuler les données manquantes : is.na()
+
+# Repérer les données manquantes
+
+# Affecter les valeurs d'une variable en données manquantes
+
+# Remplacer des données manquantes (NA) en valeur spécifique
+
+
+
+

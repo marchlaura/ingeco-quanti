@@ -1,5 +1,5 @@
 ---
-title: "<center>Excel : import - export</center>"
+title: "<center>Ajouter ou modifier une colonne / variable</center>"
 output: 
   html_document:
     toc: true

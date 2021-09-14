@@ -11,7 +11,7 @@
 
 
 
-<title>missing.knit</title>
+<title>Donnees manquantes</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -370,7 +370,7 @@ div.tocify {
       <a href="missing.html">Donnees manquantes</a>
     </li>
     <li>
-      <a href="decrire.html">Décrire ses données</a>
+      <a href="decrire.html">Modifier-Ajouter colonne</a>
     </li>
   </ul>
 </li>
@@ -397,9 +397,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore"><center>
-Excel : import - export
-</center></h1>
+<h1 class="title toc-ignore">Donnees manquantes</h1>
 
 </div>
 
@@ -408,7 +406,42 @@ Excel : import - export
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p>WORK IN PROGRESS…</p>
+<p>EN CONSTRUCTION</p>
+<p>La gestion des données manquantes dans R est centrale et peut entraîner d’importantes erreurs. R considère une donnée comme manquante si elle est codée en NA. Si vous avez des variables texte avec écrit “manquant”, “missing” ou même un blanc comme " " ou "", R n’interprétera pas ces valeurs comme des données manquantes mais comme des valeurs. C’est à vous des convertir ces valeurs en NA pour qu’elles soient automatiquement considérées comme manquantes par R.</p>
+<div id="principales-difficultés" class="section level1">
+<h1>Principales difficultés</h1>
+<p>Les principales difficultés autour des données manquantes :</p>
+<ul>
+<li>certaines fonctions renvoient une erreur en présence de données manquantes, il faut alors bien préciser en paramètre la présence de données manquantes ;</li>
+<li>lorsqu’on écrit une condition (pour sélectionner des observations par exemple), il faut impérativement tenir compte de la présence de données manquantes</li>
+<li>si vous faites des modèles statistiques, toutes les observations contenant au moins une donnée manquante parmi la variable à expliquer et les variables explicatives ne seront pas prise en compte dans l’analyse ;</li>
+</ul>
+<p>Exemple de difficultés :</p>
+<pre class="r klippy"><code>summary(airquality)
+iris %&gt;% summarise(moyenne=mean(Sepal.Width))
+airquality %&gt;% summarise(moyenne=mean(Ozone))
+airquality %&gt;% summarise(moyenne=mean(Ozone,na.rm = TRUE))</code></pre>
+<pre class="r klippy"><code>airquality %&gt;% filter(Solar.R&lt;20)
+airquality %&gt;% filter(Solar.R&lt;20 | is.na(Solar.R))</code></pre>
+<pre class="r klippy"><code>lm(Ozone ~ Solar.R +  Wind,data = airquality) %&gt;% summary()
+airquality %&gt;% select(Ozone,Solar.R,Wind) %&gt;% lm(Ozone ~ Solar.R +  Wind,data = .) %&gt;% summary()
+airquality %&gt;% count()
+airquality %&gt;% select(Ozone,Solar.R,Wind) %&gt;% complete.cases() %&gt;% sum()
+airquality %&gt;% mutate(in_model=complete.cases(.))
+airquality %&gt;% mutate(in_model=complete.cases(across(c(Ozone,Wind))))</code></pre>
+</div>
+<div id="manipuler-les-données-manquantes-is.na" class="section level1">
+<h1>Manipuler les données manquantes : is.na()</h1>
+</div>
+<div id="repérer-les-données-manquantes" class="section level1">
+<h1>Repérer les données manquantes</h1>
+</div>
+<div id="affecter-les-valeurs-dune-variable-en-données-manquantes" class="section level1">
+<h1>Affecter les valeurs d’une variable en données manquantes</h1>
+</div>
+<div id="remplacer-des-données-manquantes-na-en-valeur-spécifique" class="section level1">
+<h1>Remplacer des données manquantes (NA) en valeur spécifique</h1>
+</div>
 
 
 
