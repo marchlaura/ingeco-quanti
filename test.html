@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="LM laura.march@ird.fr" />
+    
+        <meta name="date" content="2021-09-15" />
+    
+    <title>Les tests statistiques avec R</title>
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+        <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="site_libs/bootstrap_material-0.1/bootstrap-material-design.min.css" rel="stylesheet" />
+        <link href="site_libs/bootstrap_material-0.1/ripples.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap_material-0.1/material.min.js"></script>
+        <script src="site_libs/bootstrap_material-0.1/ripples.min.js"></script>
+        <link href="site_libs/material-0.1/material.css" rel="stylesheet" />
+        <script src="site_libs/material-0.1/material.js"></script>
+        <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+        <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+        <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          background-color: #ffffff;
+          color: #a0a0a0;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+      div.sourceCode
+        { color: #1f1c1b; background-color: #ffffff; }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span { color: #1f1c1b; } /* Normal */
+      code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+      code span.an { color: #ca60ca; } /* Annotation */
+      code span.at { color: #0057ae; } /* Attribute */
+      code span.bn { color: #b08000; } /* BaseN */
+      code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+      code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #924c9d; } /* Char */
+      code span.cn { color: #aa5500; } /* Constant */
+      code span.co { color: #898887; } /* Comment */
+      code span.cv { color: #0095ff; } /* CommentVar */
+      code span.do { color: #607880; } /* Documentation */
+      code span.dt { color: #0057ae; } /* DataType */
+      code span.dv { color: #b08000; } /* DecVal */
+      code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+      code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+      code span.fl { color: #b08000; } /* Float */
+      code span.fu { color: #644a9b; } /* Function */
+      code span.im { color: #ff5500; } /* Import */
+      code span.in { color: #b08000; } /* Information */
+      code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+      code span.op { color: #1f1c1b; } /* Operator */
+      code span.ot { color: #006e28; } /* Other */
+      code span.pp { color: #006e28; } /* Preprocessor */
+      code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+      code span.sc { color: #3daee9; } /* SpecialChar */
+      code span.ss { color: #ff5500; } /* SpecialString */
+      code span.st { color: #bf0303; } /* String */
+      code span.va { color: #0057ae; } /* Variable */
+      code span.vs { color: #bf0303; } /* VerbatimString */
+      code span.wa { color: #bf0303; } /* Warning */
+    </style>
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .pages .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .pages .tabset-dropdown > .nav-tabs > li.active > a {
+	  background-color: transparent !important;
+	  color: #000000 !important;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+	  color: #00A698 !important;
+	  font-weight: 300 !important;
+	  font-size: 14px;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+      }
+    </style>
+    
+</head>
+
+<body>
+
+  <div class="header-panel shadow z-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-3">
+	  	  <div id="header">
+	    <h1 class="title">Les tests statistiques avec R</h1>
+	    	    	    	    <h4 class="author">LM <a href="mailto:laura.march@ird.fr" class="email">laura.march@ird.fr</a></h4>
+	    	    	    	    <h4 class="date">2021-09-15</h4>
+	    	  </div>
+	  	</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-fluid main-container">
+    <div class="row">
+
+<nav class="col-xs-3 menu">
+<div id="toc">
+<ul>
+<li><a href="#rappel-sur-les-tests-statistiques">Rappel sur les tests statistiques</a></li>
+<li><a href="#présentation-des-jeux-de-données">Présentation des jeux de données</a></li>
+<li><a href="#comparaisons-de-moyennes---tests-paramétriques">Comparaisons de moyennes - tests paramétriques</a></li>
+<li><a href="#comparaison-de-variance">Comparaison de variance</a></li>
+<li><a href="#comparaisons-de-médianes">Comparaisons de médianes</a></li>
+<li><a href="#comparaison-de-deux-proportions">Comparaison de deux proportions</a></li>
+<li><a href="#corrélations-et-indépendances">Corrélations et indépendances</a></li>
+<li><a href="#comparaison-de-distribution">Comparaison de distribution</a></li>
+<li><a href="#résumé-des-commandes-relatives-aux-tests-statistiques-avec-r">Résumé des commandes relatives aux tests statistiques avec R</a></li>
+</ul>
+</div>
+</nav>
+      
+<div class="pages col-xs-9">
+
+        
+<div class="row">
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><a href="#" style="max-width:60px;" class="navbar-left"><img src="image/logo_ingeco_site.png"></a></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Start
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="package_love.html">Package</a>
+    </li>
+    <li>
+      <a href="fichier_orga.html">Organiser ses fichiers</a>
+    </li>
+    <li>
+      <a href="ressources.html">Ressources</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Préparation Données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="excel.html">Excel : import-export</a>
+    </li>
+    <li>
+      <a href="selection.html">Selection colonnes</a>
+    </li>
+    <li>
+      <a href="modifier.html">Selection lignes</a>
+    </li>
+    <li>
+      <a href="conversion.html">Conversion</a>
+    </li>
+    <li>
+      <a href="missing.html">Donnees manquantes</a>
+    </li>
+    <li>
+      <a href="decrire.html">Modifier-Ajouter colonne</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Presentation Données
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="decrire.html">Tableaux</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Stat descriptive
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="decrire.html">Tests</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;laura.march@ird.fr&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://www.lped.fr/+-march-laura-366-+.html">
+    <span class="fa fa-smile-o"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+</div>
+
+    
+<div class="row">
+
+<div class="col-xs-10">
+<p>Ce document présente les outils pour effectuer les principaux tests statistiques. Il n’a pa vocation a présenter la théorie des tests, seulement à rappeler les principales commandes à utiliser avec R. Suite au cours, il m’a semblé que les niveaux des étudiant.e.s sont assez hétérogènes. J’ai donc ajouté un exemple introductif et explicité les hypothèses et les conclusions de chaque test pour une meilleure compréhension.</p>
+<div id="rappel-sur-les-tests-statistiques" class="section level1">
+<h1>Rappel sur les tests statistiques</h1>
+<p>A partir de l’information disponible dans l’échantillon on confronte deux hypothèses sur un paramètre d’intérêt pour une ou plusieurs populations. On définit :<br />
+- H0 : l’hypothèse nulle<br />
+- H1 : l’hypothèse alternative</p>
+<p>Exemple 1 : Le salaire net moyen mensuel des étudiants de ce cours à la sortie du M2 est-il supérieur à 1500€ ?<br />
+- H0 : salaire &lt;1500€<br />
+- H1 : salaire &gt;= 1500€</p>
+<p>Exemple 2 : Le salaire net moyen mensuel des étudiants de ce cours à la sortie du M2 serat-il identique pour les femmes et pour les hommes ?<br />
+- H0 : Salaire moyen Hommes = Salaire moyen Femmes<br />
+- H1 : Salaire moyen Hommes <span class="math inline">\({\ne}\)</span> Salaire moyen Femmes</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;color: black !important;font-weight: bold;color: black !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;font-weight: bold;color: black !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+<span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;">Décision</span>
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+<span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"></span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: black !important;font-weight: bold;color: black !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;font-weight: bold;color: black !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+<span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;">Conserver H0</span>
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+<span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;">Rejeter H0 /accepter H1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+Réalité
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+H0 vraie
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">Bonne décision</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;">Erreur de première espèce <span class="math inline">\(\alpha\)</span></span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+</td>
+<td style="text-align:left;font-weight: bold;color: black !important;">
+H0 fausse / H1 vraie
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;">Erreur de deuxième espèce ß</span>
+</td>
+<td style="text-align:left;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">Bonne décision ; Puissance du test 1-ß</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Dans la démarche fréquentiste classique, on cherche à contrôler, minimiser les risque alpha au détriment de l’erreur de deuxième espèce. On a un déséquilibre dans les deux hypothèses. H0 est une vraie décision. L’intuition de l’idée c’est qu’on préfère minimiser le risque d’emprisonner quelqu’un qui est innocent au détriment du risque de laisser libre un coupable.</p>
+<p>Le risque alpha est donc la probabilité de rejeter l’hypothèse H0 alors qu’elle était vraie. Ou dit autrement, il s’agit de la probabilité, si H0 est vraie, d’observer les valeurs de notre échantillon.</p>
+<p>Lorsqu’on effectue un test statistique, on estime la fameuse p-value qui est le risque alpha associé au test. La p-value est la probabilité de vous tromper en déclarant que H0 est fausse. On souhaite donc que la probabilité de se tromper soit la plus faible possible. Le seuil est souvent fixé à 5% (dans le nucléaire on fixe un seuil beaucoup plus faible). Ce qui signifie que si la p-value est inférieur à 5%, on va rejeter H0 et retenir l’hypothèse alternative H1.</p>
+<p>Exemple :<br />
+Un ami vous propose un jeu d’argent. Vous devez tirer un dé à 6 faces 3 fois d’affilé. Pour chaque valeur supérieure ou égale à 3 vous gagnez 1euro. Pour chaque valeur égale à 1 ou 2 vous perdez 1€. Vous acceptez de jouer à ce jeu et vous obtenez les valeurs suivantes : 1,2,1. Vous avez perdu 3€. Votre ami vous propose de jouer à nouveau, mais le doute s’installe. Le dé serait-il truqué ?</p>
+<p>2 possibilités s’offrent à vous :</p>
+<p>Si votre amitié est importante, vous allez vouloir minimiser le risque de vous fâcher avec votre ami en l’accusant à tord de tricher, on pose alors :<br />
+H0 : le dé n’est pas truqué<br />
+H1 : le dé est truqué</p>
+<p>Ou alors, vous êtes un vrai radin et votre amitié est secondaire, vous voulez minimiser le risque de perdre de l’argent :<br />
+H0 : le dé est truqué<br />
+H1 : le dé n’est pas truqué</p>
+<p>On se pose dans le premier cas, et on suppose que le dé n’est pas truqué. Sous cette hypothèse, la probabilité de n’obtenir que des faces perdantes (1 ou 2) est égale à <span class="math inline">\(\frac {2}{6}*\frac {2}{6}*\frac {2}{6}\)</span> soit <span class="math inline">\(\frac {8}{216}\)</span> soit <span class="math inline">\(\frac {1}{27}\)</span> soit 3.3%. Si vous accusez votre ami de tricher (de rejeter H0), vous vous avez 1 chance sur 27 de vous tromper.</p>
+<p>La probabilité de n’obtenir que des 1 et des 2 est donc faible mais elle n’est pas nulle. Vous êtes peut-être particulièrement malchanceux. Je vous conseille de tirer le dé discrètement 30 fois d’affilé et de compter le nombre de 1 et de 2 avant de risquer de fâcher votre ami!</p>
+<p><strong>Tests paramétriques ou non paramétriques?</strong></p>
+<p>Le test paramétrique est un test pour lequel on fait une hypothèse sur la forme (la distribution) des données. On considère que l’échantillon est tiré selon une loi de distribution appartenant à une famille donné (loi Normale, loi de Poisson…). Lorsque la taille de l’échantillon est suffisamment grande, on peut s’affranchir de ces postulats grâce au théorème asymptomatiques comme le Théorème Centrale Limite (TCL).</p>
+<p>Les test non paramétriques vont permettre de tester des données issues de petits échantillons dont on ne connait pas la distribution. Ils sont dit non paramétriques puisqu’ils n’impliquent pas l’estimation de paramètre décrivant la distribution de la variable étudiée (comme la moyenne ou l’écart-type). On peut les utiliser quelque soit la loi de l’échantillon.</p>
+<p>En général les tests non paramétriques sont plus conservateurs (on rejette H0 moins souvent). Ces tests sont à privilégier en présence de petits échantillon.</p>
+</div>
+<div id="présentation-des-jeux-de-données" class="section level1">
+<h1>Présentation des jeux de données</h1>
+<p>Les tests statistiques seront mis en oeuvre sur deux jeux de données. Le premier jeu de données s’appelle <code>iris</code>, c’est un jeu de données proposées par défaut sous R. J’utilise la fonction <code>glimpse</code> de la librairie <code>tidyverse</code> pour décrire les variables succinctement. Ce jeu de données décrit la largeur et la longueur de pétal et de sépal mesurées sur 150 fleurs. Ces fleurs sont issues de 3 espèces différentes.<br />
+Le deuxième jeu de données, fictif lui aussi, décrit les habitudes de vie de 2000 personnes. Ce fichier de données est rattaché à la librairie <code>questionr</code>, il faut utiliser la fonction <code>data</code>pour charger les données dans l’environnement de R. J’utilise à nouveau la fonction <code>glimpse</code> pour décrire les données.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(iris)</span></code></pre></div>
+<pre><code>## Rows: 150
+## Columns: 5
+## $ Sepal.Length &lt;dbl&gt; 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, 5.4, 4.~
+## $ Sepal.Width  &lt;dbl&gt; 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.~
+## $ Petal.Length &lt;dbl&gt; 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, 1.5, 1.~
+## $ Petal.Width  &lt;dbl&gt; 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, 0.2, 0.~
+## $ Species      &lt;chr&gt; &quot;setosa&quot;, &quot;setosa&quot;, &quot;setosa&quot;, &quot;setosa&quot;, &quot;setosa&quot;, &quot;setosa~</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(questionr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hdv2003)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> hdv2003</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(d)</span></code></pre></div>
+<pre><code>## Rows: 2,000
+## Columns: 20
+## $ id            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1~
+## $ age           &lt;int&gt; 28, 23, 59, 34, 71, 35, 60, 47, 20, 28, 65, 47, 63, 67, ~
+## $ sexe          &lt;fct&gt; Femme, Femme, Homme, Homme, Femme, Femme, Femme, Homme, ~
+## $ nivetud       &lt;fct&gt; &quot;Enseignement superieur y compris technique superieur&quot;, ~
+## $ poids         &lt;dbl&gt; 2634.3982, 9738.3958, 3994.1025, 5731.6615, 4329.0940, 8~
+## $ occup         &lt;fct&gt; &quot;Exerce une profession&quot;, &quot;Etudiant, eleve&quot;, &quot;Exerce une ~
+## $ qualif        &lt;fct&gt; Employe, NA, Technicien, Technicien, Employe, Employe, O~
+## $ freres.soeurs &lt;int&gt; 8, 2, 2, 1, 0, 5, 1, 5, 4, 2, 3, 4, 1, 5, 2, 3, 4, 0, 2,~
+## $ clso          &lt;fct&gt; Oui, Oui, Non, Non, Oui, Non, Oui, Non, Oui, Non, Oui, O~
+## $ relig         &lt;fct&gt; Ni croyance ni appartenance, Ni croyance ni appartenance~
+## $ trav.imp      &lt;fct&gt; Peu important, NA, Aussi important que le reste, Moins i~
+## $ trav.satisf   &lt;fct&gt; Insatisfaction, NA, Equilibre, Satisfaction, NA, Equilib~
+## $ hard.rock     &lt;fct&gt; Non, Non, Non, Non, Non, Non, Non, Non, Non, Non, Non, N~
+## $ lecture.bd    &lt;fct&gt; Non, Non, Non, Non, Non, Non, Non, Non, Non, Non, Non, N~
+## $ peche.chasse  &lt;fct&gt; Non, Non, Non, Non, Non, Non, Oui, Oui, Non, Non, Non, N~
+## $ cuisine       &lt;fct&gt; Oui, Non, Non, Oui, Non, Non, Oui, Oui, Non, Non, Oui, N~
+## $ bricol        &lt;fct&gt; Non, Non, Non, Oui, Non, Non, Non, Oui, Non, Non, Oui, O~
+## $ cinema        &lt;fct&gt; Non, Oui, Non, Oui, Non, Oui, Non, Non, Oui, Oui, Oui, N~
+## $ sport         &lt;fct&gt; Non, Oui, Oui, Oui, Non, Oui, Non, Non, Non, Oui, Non, O~
+## $ heures.tv     &lt;dbl&gt; 0.0, 1.0, 0.0, 2.0, 3.0, 2.0, 2.9, 1.0, 2.0, 2.0, 1.0, 0~</code></pre>
+</div>
+<div id="comparaisons-de-moyennes---tests-paramétriques" class="section level1">
+<h1>Comparaisons de moyennes - tests paramétriques</h1>
+<div id="comparaison-de-deux-moyennes---tests-de-student" class="section level2">
+<h2>Comparaison de deux moyennes - Tests de Student</h2>
+<p><strong>Conditions du tests</strong><br />
+- X suit une loi normale ou n est grand (&gt;30)<br />
+- préciser en option si les variances sont égales <code>var.equal = T</code> (test de Student) ou inégales <code>var.equal = F</code> (test de Welsh)</p>
+<p><strong>Exemple</strong> : La moyenne d’âge est-elle différente selon qu’on écoute du hard rock ou non ?</p>
+<p><strong>Hypothèses</strong><br />
+H0 : moyenne d’âge des personnes qui écoutent du hard rock = moyenne d’âge des personnes qui n’écoutent pas de hard rock<br />
+H1 : moyenne d’âge des personnes qui écoutent du hard rock <span class="math inline">\(\ne\)</span> moyenne d’âge des personnes qui n’écoutent pas de hard rock</p>
+<p>OU</p>
+<p><span class="math inline">\({H0 :}\;\overline{Age}_{Hard Rock=Non} = \overline{Age}_{Hard Rock=Oui}\;\)</span> <strong><em>versus</em></strong> <span class="math inline">\(\;{H1 :}\;\overline{Age}_{Hard Rock=Non} \neq \overline{Age}_{Hard Rock=Oui}\)</span></p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(hard.rock) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(age,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(age,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(age))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    d <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(age,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(age,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(age))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hard.rock=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(hard.rock),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(hard.rock))) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+hard.rock
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Non
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+48.0
+</td>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:right;">
+97
+</td>
+<td style="text-align:right;">
+16.9
+</td>
+<td style="text-align:right;">
+48.3
+</td>
+<td style="text-align:right;">
+1986
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oui
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+22.2
+</td>
+<td style="text-align:right;">
+25.5
+</td>
+<td style="text-align:right;">
+30.5
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+27.6
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+48.0
+</td>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:right;">
+97
+</td>
+<td style="text-align:right;">
+16.9
+</td>
+<td style="text-align:right;">
+48.2
+</td>
+<td style="text-align:right;">
+2000
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Explications sur le code</strong><br />
+<code>group_by(hard.rock)</code> indique que la suite des opérations doit s’appliquer à chacune des valeurs de hard.rock<br />
+<code>bind_rows(...)</code> permet de concaténer des lignes à notre tableau initial. Ici, cela me permet d’ajouter une ligne pour l’ensemble des données<br />
+<code>mutate(hard.rock=if_else(is.na(hard.rock),"Ensemble",as.character(hard.rock)))</code> renomme la dernière ligne Ensemble<br />
+<code>kable(digits = 1)</code> indique que les variables en format numerique doivent être arrondies un chiffre après la virgule<br />
+<code>kable_styling("striped")</code> permet d’avoir un joli tableau en sortie RMarkdown<br />
+L’option <code>na.rm = T</code> indique de calculer les statistiques sur le sous-échantillons des données non manquantes. Ici on n’a pas de données manquantes mais c’est souvent le cas. Si vous êtes en présence de données manquantes et que vous n’avaez pas indiqué cette option, R renvoie NA à la place de l’indicateur que vous souhaitiez calculer.</p>
+<p><strong>Lecture</strong><br />
+L’âge médian des personnes qui écoutent du hard rock est de 25.5 ans alors que l’âge médian des personnes qui n’écoutent pas de hard rock est de 48 ans.<br />
+L’âge moyen des personnes qui écoutent du hard rock est de 27.6 ans alors que l’âge moyen des personnes qui n’écoutent pas de hard rock est de 48.3 ans.</p>
+<p><strong>Représentation graphique</strong> Ci après un exemple de boîte à moustache.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-5-1.png" width="576" /></p>
+<p>Maintenant on effectue le test de Student pour tester si l’âge moyen est différent dans les deux groupes.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d, <span class="at">var.equal =</span> F, <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  age by hard.rock
+## t = 9.6404, df = 13.848, p-value = 1.611e-07
+## alternative hypothesis: true difference in means between group Non and group Oui is not equal to 0
+## 95 percent confidence interval:
+##  16.11379 25.34758
+## sample estimates:
+## mean in group Non mean in group Oui 
+##          48.30211          27.57143</code></pre>
+<p><strong>Interprétation</strong> La probabilité de rejeter H0 en se trompant est égale à 1.611e-07 soit à 0.0000001611. Ou dit autrement, la p-value est inférieure à 5%, donc on rejette H0, donc on accepte H1.<br />
+On rejette l’hypothèse d’égalité des moyenne (H0), ce qui revient à dire que les moyennes sont significativement différentes (H1). Ce qui n’est pas vraiment étonnant puisque les personnes qui écoutent du hard rock sont nettement plus jeunes dans notre échantillon.</p>
+<p><strong>Remarques</strong><br />
+Ces remarques sont généralisables à l’ensemble des tests présentés dans la suite du document. Pour alléger le document, je me placerai ensuite toujours dans le cas de deux échantillons indépendants et d’un test bilatéral. Mais il est presque toujours possible en modifiant les options d’indiquer s’il s’agit dun test de conformité sur un seul échantillon, ou s’il s’agit de deux échantillons appariés ou encore d’indiquer que l’on souhaite effectuer un test unilatéral.</p>
+<ul>
+<li><p><strong>Tests unilatéral ou bilatéral</strong><br />
+On aurait pu vouloir tester si les personnes qui n’écoutent pas du hard rock sont plus âgées que les personnes qui en écoutent. C’est ce qu’on appelle un test unilatéral. Les hypothèses deviennent alors les suivantes.</p>
+<p>Test unilatéral<br />
+H0 : la moyenne d’âge des personnes qui n’écoutent pas du hard-rock est &lt;= à la moyenne d’âge des personnes qui écoutent du hard-rock<br />
+H1 : la moyenne d’âge des personnes qui n’écoutent pas du hard-rock est &gt; à la moyenne d’âge des personnes qui écoutent du hard-rock</p>
+<p>OU</p>
+<p><span class="math inline">\({H0 :}\;\overline{Age}_{Hard Rock=Non} \leq \overline{Age}_{Hard Rock=Oui}\;\)</span> <strong><em>versus</em></strong> <span class="math inline">\(\;{H1 :}\;\overline{Age}_{Hard Rock=Non} &gt; \overline{Age}_{Hard Rock=Oui}\)</span></p>
+<p>La commande à utilser est alors la suivante (on modifie l’option <code>alternative</code>) :<br />
+<code>t.test(age ~ hard.rock, data=d, var.equal = F, alternative = "greater")</code></p></li>
+<li><p><strong>Echantillons appariés</strong><br />
+Les échantillons appariées concernent les cas de mesures répétées sur un même individu. Le calcul de la variance est alors différent et le test est plus puissant. Par exemple, on mesure le taux de glycémie avant et après un effort sportif d’un ensemble d’individu puis on teste si le taux de glycémie moyen a baissé avant et après l’effort. Il faut alors préciser qu’il s’agit d’un échantillon apparié avec l’option <code>paired=TRUE</code>. Si les mesures sont effectuées sur des échantillons distincts, on parle alors d’échantillons indépendants.</p></li>
+<li><p><strong>Test de conformité sur un échantillon </strong><br />
+On aurait pu tester si la moyenne d’âge dans notre échantillon était égale à une valeur de référence.<br />
+Exemple : est-ce que la moyenne d’âge des personnes qui n’écoutent pas du hard rock est égale à 30 ?<br />
+H0 : la moyenne d’âge des personnes qui n’écoutent pas du hard rock est égale à 30<br />
+H1 : la moyenne d’âge des personnes qui n’écoutent pas du hard rock est différente de 30<br />
+OU <span class="math inline">\({H0 :}\;\overline{Age}=30\;\)</span> <strong><em>versus</em></strong> <span class="math inline">\(\;{H1 :}\;\overline{Age} \ne 30\)</span></p>
+<p>La commande à utilser est alors la suivante : <code>t.test(d$age[d$hard.rock=="Non"],mu=30,alternative = "two.sided")</code></p></li>
+</ul>
+</div>
+<div id="comparaison-de-k-moyennes" class="section level2">
+<h2>Comparaison de k moyennes</h2>
+<div id="analyse-de-variance-par-anova" class="section level3">
+<h3>Analyse de variance par ANOVA</h3>
+<p>Conditions :<br />
+- normalité des résidus<br />
+- homoscédasticité des résidus</p>
+<p>H0 [toutes les moyennes sont égales ] <span class="math inline">\(m_{1}=m_{2}=...=m_{n}\)</span><br />
+H1 [au moins une moyenne est différente] <span class="math inline">\(\exists \; (i,j) \; _{i \ne j} \; tq \; m_{i} \ne m_{j}\)</span></p>
+<p><strong>Exemple</strong><br />
+On va comparer la largeur moyenne des sépales de 3 espèces setosa, versicolor, virginica. On utilise les variables <code>Sepal.Width</code>et <code>Species</code> du jeu de données <code>iris</code>.<br />
+H0 : la moyenne des largeurs des sépales sont égales pour les 3 espèces<br />
+H1 : au moins deux espèces ont des largeurs moyenne de sépales différentes</p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+2.2
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-8-1.png" width="576" /></p>
+<p><strong>ANOVA</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">aov</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## Species       2  11.35   5.672   49.16 &lt;2e-16 ***
+## Residuals   147  16.96   0.115                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><strong>Vérification des hypothèses de normalité et d’homoscédasticité</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(model<span class="sc">$</span>res)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-10-1.png" width="576" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(model<span class="sc">$</span>res)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  model$res
+## W = 0.98948, p-value = 0.323</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(model<span class="sc">$</span>res, iris<span class="sc">$</span>Species)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  model$res and iris$Species
+## Bartlett&#39;s K-squared = 2.0911, df = 2, p-value = 0.3515</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>Le test de Shapiro permet de vérifier la normalité des résidus du modèle de l’ANOVA.<br />
+H0 : les données sont issues d’une population normalement distribuée<br />
+H1 : les données ne sont pas issues d’une population normalement distribuée</p>
+<p>La p-valeur du test de Shapiro sur les résidus du modèle est égale à <code>0.323</code>. La p-valeur est supérieure à 5%, on accepte donc H0. Les résidus du modèle sont ditribués normalement.</p>
+<p>Le test de Bartlett permet de vérifier l’homoscédasticité des variances des résidus du modèle.<br />
+H0 : les variances des résidus du modèles sont identiques dans les 3 groupes d’espèces [homoscédasticité]<br />
+H1 : les variances des résidus du modèles sont différentes pour au moins deux espèces [hétéroscédasticité]</p>
+<p>La p-valeur du test de Bartlett sur les résidus du modèle est égale à <code>0.3515</code>. La p-valeur est supérieure à 5%, on accepte donc H0. Les résidus du modèle sont homoscédastiques.</p>
+<p>Les résidus du modèle de l’ANOVA sont normaux et homoscédastiques. Les conditions du modèle sont vérifiées. On peut donc interpréter les résultats de l’ANOVA. La p-valeur de l’ANOVA sur les résidus du modèle est égale à <code>&lt;2e-16</code>. La probabilité est tellement faible que le logiciel vous indique qu’elle est inférieure à 0.0000000000000002, ce qui s’écrit bien <span class="math inline">\(2*10^{-16}\)</span> en écriture scientifique. La p-valeur est inférieure à 5%, on rejette H0 et on accepte H1. La moyenne des largeurs de sépal est différente pour au moins deux espèces.</p>
+</div>
+<div id="tests-de-tuckey" class="section level3">
+<h3>Tests de Tuckey</h3>
+<p>Le test de Tuckey va permettre de comparer les moyennes 2 à 2 pour chaque groupe. Le fait de multiplier les tests statistiques augmente la probabilité globale de se tromper quand on rejette H0 (risque α). Le test de Tuckey propose une correction de l’inflation du risque α.</p>
+<p>Conditions :<br />
+- normalité des résidus<br />
+- homoscédasticité des résidus</p>
+<p><strong>Exemple</strong><br />
+On va comparer la largeur moyenne des sépales de 3 espèces setosa, versicolor, virginica. On utilise les variables <code>Sepal.Width</code>et <code>Species</code> du jeu de données <code>iris</code>.<br />
+H0 : on teste si la moyenne des largeurs des sépales est égales pour les espèces prises 2 à 2<br />
+H1 : on teste si la moyenne des largeurs des sépales est différente pour les espèces prises 2 à 2</p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+2.2
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-12-1.png" width="576" /></p>
+<p><strong>TukeyHSD</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">aov</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = Sepal.Width ~ Species, data = iris)
+## 
+## $Species
+##                        diff         lwr        upr     p adj
+## versicolor-setosa    -0.658 -0.81885528 -0.4971447 0.0000000
+## virginica-setosa     -0.454 -0.61485528 -0.2931447 0.0000000
+## virginica-versicolor  0.204  0.04314472  0.3648553 0.0087802</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model))</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-13-1.png" width="576" /></p>
+<p><strong>Vérification des hypothèses de normalité et d’homoscédasticité</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(model<span class="sc">$</span>res)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-14-1.png" width="576" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(model<span class="sc">$</span>res)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  model$res
+## W = 0.98948, p-value = 0.323</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(model<span class="sc">$</span>res, iris<span class="sc">$</span>Species)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  model$res and iris$Species
+## Bartlett&#39;s K-squared = 2.0911, df = 2, p-value = 0.3515</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>Le test de Shapiro permet de vérifier la normalité des résidus du modèle de l’ANOVA.<br />
+H0 : les données sont issues d’une population normalement distribuée<br />
+H1 : les données ne sont pas issues d’une population normalement distribuée</p>
+<p>La p-valeur du test de Shapiro sur les résidus du modèle est égale à <code>0.323</code>. La p-valeur est supérieure à 5%, on accepte donc H0. Les résidus du modèle sont ditribués normalement.</p>
+<p>Le test de Bartlett permet de vérifier l’homoscédasticité des variances des résidus du modèle. H0 : les variances des résidus du modèles sont identiques dans les 3 groupes d’espèces [homoscédasticité] H1 : les variances des résidus du modèles sont différentes pour au moins deux espèces [hétéroscédasticité]</p>
+<p>La p-valeur du test de Bartlett sur les résidus du modèle est égale à <code>0.3515</code>. La p-valeur est supérieure à 5%, on accepte donc H0. Les résidus du modèle sont homoscédastiques.</p>
+<p>Les résidus du modèle de l’ANOVA sont normaux et homoscédastiques. Les conditions du modèle sont vérifiées. On peut donc interpréter les résultats du test de Tuckey.</p>
+<ol style="list-style-type: decimal">
+<li><p>versicolor-setosa<br />
+H0 : largeur moyenne du sépal de l’espèce versicolor = largeur moyenne du sépal de l’espèce setosa<br />
+H1 : largeur moyenne du sépal de l’espèce versicolor <span class="math inline">\(\ne\)</span> largeur moyenne du sépal de l’espèce setosa<br />
+La p-value est égale à <code>0.0000000</code>, ce qui signifie qu’elle est inférieure à <span class="math inline">\(10^{-7}\)</span>. On rejette H0. Les largeurs moyenne des sépal des espèces versicolor et setosa sont significativement différentes.</p></li>
+<li><p>virginica-setosa<br />
+H0 : largeur moyenne du sépal de l’espèce virginica = largeur moyenne du sépal de l’espèce setosa<br />
+H1 : largeur moyenne du sépal de l’espèce virginica <span class="math inline">\(\ne\)</span> largeur moyenne du sépal de l’espèce setosa<br />
+La p-value est égale à <code>0.0000000</code>, ce qui signifie qu’elle est inférieure à <span class="math inline">\(10^{-7}\)</span>. On rejette H0. Les largeurs moyenne des sépal des espèces virginica et setosa sont significativement différentes.</p></li>
+<li><p>virginica-versicolor<br />
+H0 : largeur moyenne du sépal de l’espèce virginica = largeur moyenne du sépal de l’espèce versicolor<br />
+H1 : largeur moyenne du sépal de l’espèce virginica <span class="math inline">\(\ne\)</span> largeur moyenne du sépal de l’espèce versicolor<br />
+La p-value est égale à <code>0.0087802</code>, elle est &lt;5%. On rejette H0. Les largeurs moyenne des sépal des espèces virginica et versicolor sont significativement différentes.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="comparaison-de-variance" class="section level1">
+<h1>Comparaison de variance</h1>
+<div id="comparaison-de-deux-échantillons-indépendants-test-de-fisher-snedecor" class="section level2">
+<h2>Comparaison de deux échantillons indépendants : Test de Fisher-Snedecor</h2>
+<p>On teste si les variances de deux échantillons sont égales.</p>
+<p>H0 : <span class="math inline">\(\sigma^2_1=\sigma^2_2\)</span><br />
+H1 : <span class="math inline">\(\sigma^2_1\ne\sigma^2_2\)</span></p>
+<p><strong>Conditions</strong> Les données issues des échantillons sont gaussiennes</p>
+<p><strong>Exemple</strong> On va tester si la variance des largeurs de sépal de l’espèce setosa est égale à la variance des largeurs de sépal de l’espèce versicolor.</p>
+<p><strong>On décrit les données</strong></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species<span class="sc">==</span><span class="st">&quot;setosa&quot;</span> <span class="sc">|</span> Species<span class="sc">==</span><span class="st">&quot;versicolor&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Species<span class="sc">==</span><span class="st">&quot;setosa&quot;</span> <span class="sc">|</span> Species<span class="sc">==</span><span class="st">&quot;versicolor&quot;</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#i$Species &lt;- droplevels(i$Species)</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data=</span>i)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-16-1.png" width="576" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>i, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length,<span class="at">y =</span> ..density..,<span class="at">color=</span>Species,<span class="at">fill=</span>Species)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-17-1.png" width="576" /></p>
+<p><strong>Test de Fisher</strong></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data=</span>i)</span></code></pre></div>
+<pre><code>## 
+##  F test to compare two variances
+## 
+## data:  Sepal.Width by Species
+## F = 1.4592, num df = 49, denom df = 49, p-value = 0.1895
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.828080 2.571444
+## sample estimates:
+## ratio of variances 
+##           1.459233</code></pre>
+<p><strong>Vérifications des conditions</strong></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;versicolor&quot;</span>])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width[iris$Species == &quot;versicolor&quot;]
+## W = 0.97413, p-value = 0.338</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;setosa&quot;</span>])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width[iris$Species == &quot;setosa&quot;]
+## W = 0.97172, p-value = 0.2715</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>Le test de Shapiro permet de vérifier la normalité des données issues d’un échantillon.<br />
+H0 : les données sont issues d’une population normalement distribuée [homoscédasticité]<br />
+H1 : les données ne sont pas issues d’une population normalement distribuée [hétéroscédasticité]</p>
+<ol style="list-style-type: decimal">
+<li>La p-valeur associée au test de normalité de Shapiro nous montre que nos deux échantillons suivent bien une loi normale. En effet, les p-valeurs sont égales à <code>0.338</code> et <code>0.2715</code>, elles sont supérieures à 5%, dans les deux cas on accepte H0, ie la normalité des distributions.<br />
+</li>
+<li>La p-valeur du test de Fisher est égale à <code>0.1895</code>, elle est supérieure à 5%, on accepte H0. Les variances sont égales dans les deux échantillons. On parle d’homoscédasticité.</li>
+</ol>
+</div>
+<div id="comparaison-de-k-échantillon-test-de-bartlett" class="section level2">
+<h2>Comparaison de k échantillon : Test de Bartlett</h2>
+<p>Le test de Bartlett permet de vérifier l’égalité des variances des résidus du modèle.<br />
+H0 : les variances des résidus du modèles sont identiques dans les 3 groupes d’espèces [homoscédasticité]<br />
+H1 : les variances des résidus du modèles sont différentes pour au moins deux espèces [hétéroscédasticité]<br />
+OU<br />
+H0 [toutes les variances sont égales ] <span class="math inline">\(\sigma_{1}=\sigma_{2}=...=\sigma_{n}\)</span><br />
+H1 [au moins une variances est différente] <span class="math inline">\(\exists \; (i,j) \; _{i \ne j} \; tq \; \sigma_{i} \ne \sigma_{j}\)</span></p>
+<p><strong>Conditions</strong><br />
+Les données issues des échantillons sont gaussiennes</p>
+<p><strong>Exemple</strong><br />
+On va tester si la variance des largeurs de sépal est égale pour les 3 espèces de fleurs.</p>
+<p><strong>On décrit les données</strong></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+2.2
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data=</span>iris)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-21-1.png" width="576" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length,<span class="at">y =</span> ..density..,<span class="at">color=</span>Species,<span class="at">fill=</span>Species)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-22-1.png" width="576" /></p>
+<p><strong>Test de Bartlett</strong></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span></code></pre></div>
+<pre><code>## 
+##  Bartlett test of homogeneity of variances
+## 
+## data:  Sepal.Width by Species
+## Bartlett&#39;s K-squared = 2.0911, df = 2, p-value = 0.3515</code></pre>
+<p><strong>Vérifications des conditions</strong></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;versicolor&quot;</span>])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width[iris$Species == &quot;versicolor&quot;]
+## W = 0.97413, p-value = 0.338</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;setosa&quot;</span>])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width[iris$Species == &quot;setosa&quot;]
+## W = 0.97172, p-value = 0.2715</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;virginica&quot;</span>])</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width[iris$Species == &quot;virginica&quot;]
+## W = 0.96739, p-value = 0.1809</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>Le test de Shapiro permet de vérifier la normalité des données issues d’un échantillon.<br />
+H0 : les données sont issues d’une population normalement distribuée [homoscédasticité]<br />
+H1 : les données ne sont pas issues d’une population normalement distribuée [hétéroscédasticité]</p>
+<ol style="list-style-type: decimal">
+<li>La p-valeur associée au test de normalité de Shapiro nous montre que nos trois échantillons suivent bien une loi normale. En effet, les p-valeurs sont égales à <code>0.338</code>, <code>0.2715</code> et <code>0.1809</code>, elles sont supérieures à 5%, dans les trois cas on accepte H0, ie la normalité des distributions.<br />
+</li>
+<li>La p-valeur du test de Bartlett sur les résidus du modèle est égale à <code>0.3515</code>. La p-valeur est supérieure à 5%, on accepte donc H0. Les résidus du modèle sont homoscédastiques.</li>
+</ol>
+</div>
+</div>
+<div id="comparaisons-de-médianes" class="section level1">
+<h1>Comparaisons de médianes</h1>
+<div id="comparaison-de-2-médianes---wilcoxon" class="section level2">
+<h2>Comparaison de 2 médianes - Wilcoxon</h2>
+<p><strong>Exemple</strong> : L’âge médian est-il différente selon qu’on écoute du hard rock ou non ?</p>
+<p><strong>Hypothèses</strong><br />
+H0 : age médian des personnes qui écoutent du hard rock = age médian des personnes qui n’écoutent pas de hard rock<br />
+H1 : age médian des personnes qui écoutent du hard rock <span class="math inline">\(\ne\)</span> age médian des personnes qui n’écoutent pas de hard rock</p>
+<p>OU</p>
+<p><span class="math inline">\({H0 :}\;MedianeAge_{Hard Rock=Non} = MedianeAge_{Hard Rock=Oui}\;\)</span> <strong><em>versus</em></strong> <span class="math inline">\(\;{H1 :}\;MedianeAge_{Hard Rock=Non} \neq MedianeAge_{Hard Rock=Oui}\)</span></p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(hard.rock) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(age,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(age,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(age))</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    d <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(age,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(age,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(age,<span class="at">na.rm =</span> T),</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(age))</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hard.rock=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(hard.rock),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(hard.rock))) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+hard.rock
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Non
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+48.0
+</td>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:right;">
+97
+</td>
+<td style="text-align:right;">
+16.9
+</td>
+<td style="text-align:right;">
+48.3
+</td>
+<td style="text-align:right;">
+1986
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oui
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+22.2
+</td>
+<td style="text-align:right;">
+25.5
+</td>
+<td style="text-align:right;">
+30.5
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+27.6
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+35.0
+</td>
+<td style="text-align:right;">
+48.0
+</td>
+<td style="text-align:right;">
+60.0
+</td>
+<td style="text-align:right;">
+97
+</td>
+<td style="text-align:right;">
+16.9
+</td>
+<td style="text-align:right;">
+48.2
+</td>
+<td style="text-align:right;">
+2000
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong> Ci après un exemple de boîte à moustache.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-26-1.png" width="576" /></p>
+<p>Maintenant on effectue le test de Wilcoxon pour tester si l’âge médian est différent dans les deux groupes.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d, <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  age by hard.rock
+## W = 23980, p-value = 2.856e-06
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La probabilité de rejeter H0 en se trompant est égale à <code>2.856e-06</code> soit à 0.000002856. Ou dit autrement, la p-value est inférieure à 5%, donc on rejette H0, donc on accepte H1.<br />
+On rejette l’hypothèse d’égalité des médiane (H0), ce qui revient à dire que les médianes sont significativement différentes (H1).</p>
+</div>
+<div id="comparaison-de-k-médianes-kruskall-wallis" class="section level2">
+<h2>Comparaison de k médianes Kruskall Wallis</h2>
+<div id="comparaison-globale" class="section level3">
+<h3>Comparaison globale</h3>
+<p>H0 [toutes les médianes sont égales ] <span class="math inline">\(med_{1}=med_{2}=...=med_{n}\)</span> H1 [au moins une médianes est différente] <span class="math inline">\(\exists \; (i,j) \; _{i \ne j} \; tq \; med_{i} \ne med_{j}\)</span></p>
+<p><strong>Exemple</strong><br />
+On va comparer la largeur médiane des sépales de 3 espèces setosa, versicolor, virginica. On utilise les variables <code>Sepal.Width</code>et <code>Species</code> du jeu de données <code>iris</code>.<br />
+H0 : la médiane des largeurs des sépales sont égales pour les 3 espèces<br />
+H1 : au moins deux espèces ont des largeurs médiane de sépales différentes</p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+2.2
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-29-1.png" width="576" /></p>
+<p><strong>Test de Kruskall Wallis</strong></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data=</span>iris)</span></code></pre></div>
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  Sepal.Width by Species
+## Kruskal-Wallis chi-squared = 63.571, df = 2, p-value = 1.569e-14</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La p-valeur du test de Kruskal-Wallis est égale à <code>1.569e-14</code>. La p-valeur est inférieure à 5%, on rejette H0 et on accepte H1. La médiane des largeurs de sépal est différente pour au moins deux espèces.</p>
+</div>
+<div id="comparaisons-multiples" class="section level3">
+<h3>Comparaisons multiples</h3>
+<p>Le test multiple de Kruskal-Wallis va permettre de comparer les médianes 2 à 2 pour chaque groupe. Le fait de multiplier les tests statistiques augmente la probabilité globale de se tromper quand on rejette H0 (risque α). Le test multiple de Kruskal-Wallis propose une correction de l’inflation du risque α.</p>
+<p><strong>Exemple</strong><br />
+On va comparer la largeur médiane des sépales de 3 espèces setosa, versicolor, virginica. On utilise les variables <code>Sepal.Width</code>et <code>Species</code> du jeu de données <code>iris</code>.<br />
+H0 : on teste si la médiane des largeurs des sépales est égales pour les espèces prises 2 à 2<br />
+H1 : on teste si la médiane des largeurs des sépales est différente pour les espèces prises 2 à 2</p>
+<p><strong>Description des données</strong><br />
+On calcul les principaux indicateurs de dispersion pour chaque groupe.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>    iris <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Sepal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Sepal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sepal.Width))</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Species=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(Species),<span class="st">&quot;Ensemble&quot;</span>,<span class="fu">as.character</span>(Species))) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+2.3
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+2.2
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ensemble
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-32-1.png" width="576" /></p>
+<p><strong>Test multiple de Kruskal-Wallis</strong></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(iris<span class="sc">$</span>Sepal.Width, iris<span class="sc">$</span>Species, <span class="at">p.adjust =</span> <span class="st">&quot;BH&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
+## 
+## data:  iris$Sepal.Width and iris$Species 
+## 
+##            setosa  versicolor
+## versicolor 6.4e-13 -         
+## virginica  1.1e-08 0.0046    
+## 
+## P value adjustment method: BH</code></pre>
+<p><strong>Interprétation</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>versicolor-setosa<br />
+H0 : largeur médiane du sépal de l’espèce versicolor = largeur médiane du sépal de l’espèce setosa<br />
+H1 : largeur médiane du sépal de l’espèce versicolor <span class="math inline">\(\ne\)</span> largeur médiane du sépal de l’espèce setosa<br />
+La p-value est égale à <code>6.4e-13</code>, elle est &lt;5%. On rejette H0. Les largeurs médianes des sépal des espèces versicolor et setosa sont significativement différentes.</p></li>
+<li><p>virginica-setosa<br />
+H0 : largeur médiane du sépal de l’espèce virginica = largeur médiane du sépal de l’espèce setosa<br />
+H1 : largeur médiane du sépal de l’espèce virginica <span class="math inline">\(\ne\)</span> largeur médiane du sépal de l’espèce setosa<br />
+La p-value est égale à <code>1.1e-08</code>, elle est &lt;5%. On rejette H0. Les largeurs médianes des sépal des espèces virginica et setosa sont significativement différentes.</p></li>
+<li><p>virginica-versicolor<br />
+H0 : largeur médiane du sépal de l’espèce virginica = largeur médiane du sépal de l’espèce versicolor<br />
+H1 : largeur médiane du sépal de l’espèce virginica <span class="math inline">\(\ne\)</span> largeur médiane du sépal de l’espèce versicolor<br />
+La p-value est égale à <code>0.0046</code>, elle est &lt;5%. On rejette H0. Les largeurs médianes des sépal des espèces virginica et versicolor sont significativement différentes.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="comparaison-de-deux-proportions" class="section level1">
+<h1>Comparaison de deux proportions</h1>
+<p>H0 : [les deux proportions sont égales] <span class="math inline">\(p_a=p_b\)</span><br />
+H1 : [les deux proportions sont différentes] <span class="math inline">\(p_a \ne p_b\)</span></p>
+<p>Conditions :<br />
+Avec na et nb qui sont respectivement le nombre de succès du groupe a et du groupe b.<br />
+<span class="math inline">\(n_a*p_a&gt;5, n_a*(1-p_a),n_b*p_b&gt;5, n_b*(1-p_b)&gt;5\)</span></p>
+<p><strong>Exemple</strong><br />
+On souhaite tester si la proportion de personne qui ne pratique pas le sport est différente selon qu’elles lisent ou non des BDs.<br />
+H0 : Proportion de non sportif <span class="math inline">\(_{lectureBD=oui}=\)</span> Proportion de non sportif <span class="math inline">\(_{lectureBD=non}\)</span><br />
+H1 : Proportion de non sportif <span class="math inline">\(_{lectureBD=oui} \ne\)</span> Proportion de non sportif <span class="math inline">\(_{lectureBD=non}\)</span></p>
+<p><strong>Description des données</strong></p>
+<p>Tableau croisé des effectifs</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(lecture.bd,sport) <span class="sc">%&gt;%</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;row&quot;</span>, <span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  lecture.bd/sport  Non Oui Total
+##               Non 1254 699  1953
+##               Oui   23  24    47
+##             Total 1277 723  2000</code></pre>
+<p>Lecture : Parmi les 1953 personnes qui ne lisent pas de BD, 1254 ne font pas sport.</p>
+<p>Tableau des pourcentages ligne</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(lecture.bd,sport) <span class="sc">%&gt;%</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>(<span class="at">rounding =</span> <span class="st">&quot;half up&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  lecture.bd/sport   Non   Oui  Total
+##               Non 64.2% 35.8% 100.0%
+##               Oui 48.9% 51.1% 100.0%</code></pre>
+<p>Lecture : Parmi les personnes qui ne lisent pas de BD, 64% ne font pas sport.</p>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> lecture.bd, <span class="at">fill =</span> sport) <span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="sc">+</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_hue</span>() <span class="sc">+</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Lecture BD&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Part des sportifs&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Lecture de la BD et pratique sportive&quot;</span>) <span class="sc">+</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-36-1.png" width="576" /></p>
+<p><strong>Test de proportion</strong></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">xtabs</span>(<span class="sc">~</span>lecture.bd <span class="sc">+</span> sport, <span class="at">data =</span> d))</span></code></pre></div>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  xtabs(~lecture.bd + sport, data = d)
+## X-squared = 4, df = 1, p-value = 0.0455
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.002652453  0.308107236
+## sample estimates:
+##    prop 1    prop 2 
+## 0.6420891 0.4893617</code></pre>
+<p><strong>Interprétation</strong> La p-valeur est égale à <code>0.0455</code>, elle est inférieure à 0.05. On rejette H0 et on accepte H1. On considère que la proportion de non sportif selon que les personnes lisent ou non des BDs est différente.</p>
+<p><strong>Notes</strong> - La commande <code>prop.test</code> nécessite de passer en paramètre un tableau ou une matrice avec sur la première colonne le nombre de succès associé à chaque proportion et sur la seconde colonne le nombre d’échecs associé à chaque proportion. Si on souhaire comparer la proportion de lecteur de BD chez les sportifs, il faut utiliser la commande <code>prop.test(matrix(c(699,24,1254,23),ncol = 2))</code><br />
+- On aurait pu également faire un test du Chi-Deux ou le test exact de Fisher.<br />
+- Si on souhaite comparer plusieurs proportions, on utilise le test du Chi-Deux.<br />
+- Pour un test apparié de deux proportions, il faut utiliser le test de McNemmar (voir la commande <code>mcnemar.test()</code>).</p>
+</div>
+<div id="corrélations-et-indépendances" class="section level1">
+<h1>Corrélations et indépendances</h1>
+<div id="test-de-corrélation-pearson---test-paramétrique" class="section level2">
+<h2>Test de corrélation : Pearson - test paramétrique</h2>
+<p>On teste la corrélation linéaire entre deux variables.<br />
+H0 : pas de corrélation entre les variables, <span class="math inline">\(r=0\)</span><br />
+H1 : corrélation linéaire entre les variables, <span class="math inline">\(r\ne0\)</span></p>
+<p><strong>Conditions</strong><br />
+normalité des variables et lien linéaire</p>
+<p><strong>Exemple</strong><br />
+On va tester la corrélation linéaire entre la longueur et la largeur des pétales.</p>
+<p><strong>Description des données</strong></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">nomVar=</span><span class="st">&quot;Petal.Width&quot;</span>,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Petal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Petal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Petal.Width))) <span class="sc">%&gt;%</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+nomVar
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Petal.Width
+</td>
+<td style="text-align:right;">
+0.1
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1.2
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">nomVar=</span><span class="st">&quot;Petal.Length&quot;</span>,</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">min=</span><span class="fu">min</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">p25=</span><span class="fu">quantile</span>(Petal.Length,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">median=</span><span class="fu">median</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">p75=</span><span class="fu">quantile</span>(Petal.Length,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">max=</span><span class="fu">max</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">moyenne=</span><span class="fu">mean</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Petal.Length))) <span class="sc">%&gt;%</span></span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+nomVar
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Petal.Length
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.6
+</td>
+<td style="text-align:right;">
+4.35
+</td>
+<td style="text-align:right;">
+5.1
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:right;">
+1.77
+</td>
+<td style="text-align:right;">
+3.76
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length)</span></code></pre></div>
+<p>[1] 0.9628654</p>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Petal.Width, <span class="at">ylab =</span> <span class="st">&quot;Longueur des pétales&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Largeur des pétales&quot;</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(Petal.Width <span class="sc">~</span> Petal.Length, <span class="at">data =</span> iris), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-39-1.png" width="576" /></p>
+<p><strong>Test de Pearson</strong></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  iris$Petal.Width and iris$Petal.Length
+## t = 43.387, df = 148, p-value &lt; 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.9490525 0.9729853
+## sample estimates:
+##       cor 
+## 0.9628654</code></pre>
+<p><strong>Interprétation</strong> La p-valeur est égale à <code>&lt; 2.2e-16</code>. La probabilité est tellement faible que le logiciel vous indique qu’elle est inférieure à 0.0000000000000002, ce qui s’écrit bien <span class="math inline">\(2*10^{-16}\)</span> en écriture scientifique. La p-valeur est inférieure à 5%, on rejette H0 et on accepte H1. Il y a bien une corrélation linéaire entre la longueur et la lergeur des pétales.</p>
+</div>
+<div id="test-de-corrélation-spearman---test-non-paramétrique" class="section level2">
+<h2>Test de corrélation : Spearman - test non paramétrique</h2>
+<p>On teste la corrélation entre les rangs des valeurs.</p>
+<p>H0 : pas de corrélation entre les variables, <span class="math inline">\(\rho=0\)</span><br />
+H1 : corrélation linéaire entre les variables, <span class="math inline">\(\rho\ne0\)</span></p>
+<p><strong>Exemple</strong> On va tester la corrélation entre la longueur et la largeur des pétales.</p>
+<p><strong>Description des données</strong></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">nomVar=</span><span class="st">&quot;Petal.Width&quot;</span>,</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">min=</span><span class="fu">min</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">p25=</span><span class="fu">quantile</span>(Petal.Width,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">median=</span><span class="fu">median</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">p75=</span><span class="fu">quantile</span>(Petal.Width,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">max=</span><span class="fu">max</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">moyenne=</span><span class="fu">mean</span>(Petal.Width,<span class="at">na.rm =</span> T),</span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Petal.Width))) <span class="sc">%&gt;%</span></span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+nomVar
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Petal.Width
+</td>
+<td style="text-align:right;">
+0.1
+</td>
+<td style="text-align:right;">
+0.3
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1.2
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">nomVar=</span><span class="st">&quot;Petal.Length&quot;</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">min=</span><span class="fu">min</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">p25=</span><span class="fu">quantile</span>(Petal.Length,<span class="fl">0.25</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">median=</span><span class="fu">median</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">p75=</span><span class="fu">quantile</span>(Petal.Length,<span class="fl">0.75</span>,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">max=</span><span class="fu">max</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">`</span><span class="at">ecart-type</span><span class="st">`</span><span class="ot">=</span><span class="fu">sd</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">moyenne=</span><span class="fu">mean</span>(Petal.Length,<span class="at">na.rm =</span> T),</span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(Petal.Length))) <span class="sc">%&gt;%</span></span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) </span></code></pre></div>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+nomVar
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+ecart-type
+</th>
+<th style="text-align:right;">
+moyenne
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Petal.Length
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.6
+</td>
+<td style="text-align:right;">
+4.35
+</td>
+<td style="text-align:right;">
+5.1
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:right;">
+1.77
+</td>
+<td style="text-align:right;">
+3.76
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length)</span></code></pre></div>
+<p>[1] 0.9628654</p>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Petal.Width, <span class="at">ylab =</span> <span class="st">&quot;Longueur des pétales&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Largeur des pétales&quot;</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(Petal.Width <span class="sc">~</span> Petal.Length, <span class="at">data =</span> iris), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-42-1.png" width="576" /></p>
+<p><strong>Test de Spearman</strong></p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Spearman&#39;s rank correlation rho
+## 
+## data:  iris$Petal.Width and iris$Petal.Length
+## S = 35061, p-value &lt; 2.2e-16
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+##       rho 
+## 0.9376668</code></pre>
+<p><strong>Interprétation</strong> La p-valeur est égale à <code>&lt; 2.2e-16</code>. La probabilité est tellement faible que le logiciel vous indique qu’elle est inférieure à 0.0000000000000002, ce qui s’écrit bien <span class="math inline">\(2*10^{-16}\)</span> en écriture scientifique. La p-valeur est inférieure à 5%, on rejette H0 et on accepte H1. Il y a bien une corrélation entre la longueur et la largeur des pétales.</p>
+</div>
+<div id="test-du-chi-deux" class="section level2">
+<h2>Test du chi-deux</h2>
+<p>On teste l’indépendance de deux variables.<br />
+H0 : les deux variables sont indépendantes<br />
+H1 : les deux variables ne sont pas indépendantes</p>
+<p><strong>Conditions</strong><br />
+Effectifs théoriques &gt;5</p>
+<p><strong>Exemple</strong><br />
+On veut savoir si d’être un homme ou une femme est associé au fait d’aller au cinéma.</p>
+<p>Tableau croisé des effectifs</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(sexe,cinema) <span class="sc">%&gt;%</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;row&quot;</span>, <span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  sexe/cinema  Non Oui Total
+##        Homme  542 357   899
+##        Femme  632 469  1101
+##        Total 1174 826  2000</code></pre>
+<p>Lecture : Parmi les 1101 femmes, 469 vont au cinéma.</p>
+<p>Tableau des pourcentages ligne</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(sexe,cinema) <span class="sc">%&gt;%</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>(<span class="at">rounding =</span> <span class="st">&quot;half up&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  sexe/cinema   Non   Oui  Total
+##        Homme 60.3% 39.7% 100.0%
+##        Femme 57.4% 42.6% 100.0%</code></pre>
+<p>Lecture : Parmi les hommes, 39.7% vont au cinéma.</p>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> sexe, <span class="at">fill =</span> cinema) <span class="sc">+</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="sc">+</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_hue</span>() <span class="sc">+</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Pourcentage&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Sortie cinéma selon le sexe&quot;</span>) <span class="sc">+</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-46-1.png" width="576" /></p>
+<p><strong>Tests du chi-deux</strong></p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="fu">table</span>(d<span class="sc">$</span>sexe,d<span class="sc">$</span>cinema))</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  table(d$sexe, d$cinema)
+## X-squared = 1.5843, df = 1, p-value = 0.2081</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La p-valeur est égale à <code>0.2081</code>, la p-valeur est supérieure à 5%. On accepte HO. Les deux variables sont indépendantes. Les hommes ne vont pas plus au cinéma que les femmes et inversement.</p>
+</div>
+<div id="test-exact-de-fisher" class="section level2">
+<h2>Test exact de Fisher</h2>
+<p>On teste l’indépendance de deux variables.<br />
+H0 : les deux variables sont indépendantes<br />
+H1 : les deux variables ne sont pas indépendantes</p>
+<p>Le test de Fischer est utilisé sur les échantillons de petites tailles quand les conditions de réalisation du Chi-Deux ne sont par réunies.</p>
+<p><strong>Exemple</strong> On veut savoir si d’être un homme ou une femme est associé au fait d’aller au cinéma.</p>
+<p>Tableau croisé des effectifs</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(sexe,cinema) <span class="sc">%&gt;%</span></span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;row&quot;</span>, <span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  sexe/cinema  Non Oui Total
+##        Homme  542 357   899
+##        Femme  632 469  1101
+##        Total 1174 826  2000</code></pre>
+<p>Lecture : Parmi les 1101 femmes, 469 vont au cinéma.</p>
+<p>Tableau des pourcentages ligne</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(sexe,cinema) <span class="sc">%&gt;%</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">&quot;col&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>(<span class="at">rounding =</span> <span class="st">&quot;half up&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<pre><code>##  sexe/cinema   Non   Oui  Total
+##        Homme 60.3% 39.7% 100.0%
+##        Femme 57.4% 42.6% 100.0%</code></pre>
+<p>Lecture : Parmi les hommes, 39.7% vont au cinéma.</p>
+<p><strong>Représentation graphique</strong></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> sexe, <span class="at">fill =</span> cinema) <span class="sc">+</span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="sc">+</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_hue</span>() <span class="sc">+</span></span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Pourcentage&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Sortie cinéma selon le sexe&quot;</span>) <span class="sc">+</span></span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-50-1.png" width="576" /></p>
+<p><strong>Tests exact de Fischer</strong></p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(<span class="fu">table</span>(d<span class="sc">$</span>sexe,d<span class="sc">$</span>cinema))</span></code></pre></div>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  table(d$sexe, d$cinema)
+## p-value = 0.2013
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  0.938038 1.353438
+## sample estimates:
+## odds ratio 
+##   1.126576</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La p-valeur est égale à <code>0.2013</code>, la p-valeur est supérieure à 5%. On accepte H0. Les deux variables sont indépendantes. Les hommes ne vont pas plus au cinéma que les femmes et inversement.</p>
+</div>
+</div>
+<div id="comparaison-de-distribution" class="section level1">
+<h1>Comparaison de distribution</h1>
+<div id="test-de-normalité-de-shapiro-wilk" class="section level2">
+<h2>Test de normalité de Shapiro-Wilk</h2>
+<p>Le test de Shapiro permet de tester si les données issues d’une population sont distribuées normalement</p>
+<p>H0 : les données sont issues d’une population normalement distribuée<br />
+H1 : les données ne sont pas issues d’une population normalement distribuée</p>
+<p><strong>Exemple</strong><br />
+On souhaite tester si la ditribution de la largeur des sépales suit une loi normale.</p>
+<p><strong>Représentationn graphique</strong></p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(iris<span class="sc">$</span>Sepal.Width, <span class="at">prob=</span>T,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.2</span>))</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x,<span class="fu">mean</span>(iris<span class="sc">$</span>Sepal.Width),<span class="fu">sd</span>(iris<span class="sc">$</span>Sepal.Width)),<span class="at">add=</span>T,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-52-1.png" width="576" /></p>
+<p><strong>Test de Shapiro-Wilk</strong></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  iris$Sepal.Width
+## W = 0.98492, p-value = 0.1012</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La p-valeur est égale à <code>0.1012</code>, elle est supérieure à 5%, on accepte H0. Les données sont normalement distribuées.</p>
+</div>
+<div id="test-de-kolmogorov---smirnov" class="section level2">
+<h2>Test de Kolmogorov - Smirnov</h2>
+<p>Il s’agit d’un test non paramétrique qui compare 2 distributions au moyen de la fonction de répartition.</p>
+<p>H0 : les deux fonctions de répartitions sont égales<br />
+H1 : les deux fonctions de répartition sont différentes</p>
+<p><strong>Représentation graphique</strong></p>
+<p>On peut représenter la densité de chacune des variables.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">data=</span>iris,<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length,<span class="at">y =</span> ..density..),<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>,<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">data=</span>iris,<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,<span class="at">y =</span> ..density..),<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;green&quot;</span>, <span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-54-1.png" width="576" /></p>
+<p>On peut aussi représenter les fonction de répartition empirique pour chacune des deux variables.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">stat_ecdf</span>(<span class="at">data=</span>iris,<span class="fu">aes</span>(<span class="at">x =</span> Petal.Length), <span class="at">geom =</span> <span class="st">&quot;step&quot;</span>,<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">stat_ecdf</span>(<span class="at">data=</span>iris,<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length), <span class="at">geom =</span> <span class="st">&quot;step&quot;</span>,<span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="test_files/figure-html/unnamed-chunk-55-1.png" width="576" /></p>
+<p><strong>Test</strong></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Sepal.Length)</span></code></pre></div>
+<pre><code>## 
+##  Two-sample Kolmogorov-Smirnov test
+## 
+## data:  iris$Petal.Length and iris$Sepal.Length
+## D = 0.56, p-value &lt; 2.2e-16
+## alternative hypothesis: two-sided</code></pre>
+<p><strong>Interprétation</strong></p>
+<p>La p-valeur est égale à <code>&lt; 2.2e-16</code>. La probabilité est tellement faible que le logiciel vous indique qu’elle est inférieure à 0.00000000000000022, ce qui s’écrit bien <span class="math inline">\(2.2*10^{-16}\)</span> en écriture scientifique. La p-valeur est inférieure à 5%, on rejette H0 et on accepte H1. La distribution des valeurs des longueurs de pétales est différente de la distribution des longueurs des sépales.</p>
+<p><strong>Note</strong><br />
+On peut aussi comparer la distribution d’une variable à une distribution théorique. Est-ce que la largeur des sépales suit une loi normale ? On utilise la commande suivante :<code>ks.test(iris$Sepal.Width,"pnorm",mean(iris$Sepal.Width),sd(iris$Sepal.Width))</code><br />
+Il s’agit du même exemple que celui du test de Shapiro mais cette fois ci on utilise un test non paramétrique (plus concervateur).</p>
+</div>
+</div>
+<div id="résumé-des-commandes-relatives-aux-tests-statistiques-avec-r" class="section level1">
+<h1>Résumé des commandes relatives aux tests statistiques avec R</h1>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaison de deux moyennes - Student</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(age <span class="sc">~</span> hard.rock, <span class="at">data =</span> d, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaisons de k moyennes - ANOVA</span></span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(model<span class="sc">$</span>res)</span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(model<span class="sc">$</span>res, iris<span class="sc">$</span>Species)</span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaisons multiples de k moyennes - Tuckey</span></span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span>
+<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(model)</span>
+<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">TukeyHSD</span>(model))</span>
+<span id="cb100-14"><a href="#cb100-14" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(model<span class="sc">$</span>res)</span>
+<span id="cb100-15"><a href="#cb100-15" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(model<span class="sc">$</span>res, iris<span class="sc">$</span>Species)</span>
+<span id="cb100-16"><a href="#cb100-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-17"><a href="#cb100-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaison de deux variances - Fisher-Snedecor</span></span>
+<span id="cb100-18"><a href="#cb100-18" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d)</span>
+<span id="cb100-19"><a href="#cb100-19" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(d<span class="sc">$</span>age[d<span class="sc">$</span>hard.rock<span class="sc">==</span><span class="st">&quot;Oui&quot;</span>])</span>
+<span id="cb100-20"><a href="#cb100-20" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(d<span class="sc">$</span>age[d<span class="sc">$</span>hard.rock<span class="sc">==</span><span class="st">&quot;Non&quot;</span>])</span>
+<span id="cb100-21"><a href="#cb100-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-22"><a href="#cb100-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaison de k variances - Bartlett</span></span>
+<span id="cb100-23"><a href="#cb100-23" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(Sepal.Width <span class="sc">~</span> Species, iris)</span>
+<span id="cb100-24"><a href="#cb100-24" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;versicolor&quot;</span>])</span>
+<span id="cb100-25"><a href="#cb100-25" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;setosa&quot;</span>])</span>
+<span id="cb100-26"><a href="#cb100-26" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width[iris<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;virginica&quot;</span>])</span>
+<span id="cb100-27"><a href="#cb100-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-28"><a href="#cb100-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaison de 2 médianes - Wilcoxon</span></span>
+<span id="cb100-29"><a href="#cb100-29" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(age <span class="sc">~</span> hard.rock, <span class="at">data=</span>d, <span class="at">alternative =</span> <span class="st">&quot;two.sided&quot;</span>)</span>
+<span id="cb100-30"><a href="#cb100-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-31"><a href="#cb100-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaisons de k médianes - Kruskall Wallis</span></span>
+<span id="cb100-32"><a href="#cb100-32" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(Sepal.Width <span class="sc">~</span> Species, <span class="at">data=</span>iris)</span>
+<span id="cb100-33"><a href="#cb100-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-34"><a href="#cb100-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaisons multiples de k médianes - Kruskall Wallis</span></span>
+<span id="cb100-35"><a href="#cb100-35" aria-hidden="true" tabindex="-1"></a><span class="fu">pairwise.wilcox.test</span>(iris<span class="sc">$</span>Sepal.Width, iris<span class="sc">$</span>Species, <span class="at">p.adjust =</span> <span class="st">&quot;BH&quot;</span>)</span>
+<span id="cb100-36"><a href="#cb100-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-37"><a href="#cb100-37" aria-hidden="true" tabindex="-1"></a><span class="co">#Comparaison de deux proportions</span></span>
+<span id="cb100-38"><a href="#cb100-38" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="fu">xtabs</span>(<span class="sc">~</span>lecture.bd <span class="sc">+</span> sport, <span class="at">data =</span> d))</span>
+<span id="cb100-39"><a href="#cb100-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-40"><a href="#cb100-40" aria-hidden="true" tabindex="-1"></a><span class="co">#Test de corrélation - Pearson</span></span>
+<span id="cb100-41"><a href="#cb100-41" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>)</span>
+<span id="cb100-42"><a href="#cb100-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-43"><a href="#cb100-43" aria-hidden="true" tabindex="-1"></a><span class="co">#Test de corrélation - Spearman</span></span>
+<span id="cb100-44"><a href="#cb100-44" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(iris<span class="sc">$</span>Petal.Width, iris<span class="sc">$</span>Petal.Length, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span>
+<span id="cb100-45"><a href="#cb100-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-46"><a href="#cb100-46" aria-hidden="true" tabindex="-1"></a><span class="co">#Test d&#39;indépendance - Chi-deux</span></span>
+<span id="cb100-47"><a href="#cb100-47" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(<span class="fu">table</span>(d<span class="sc">$</span>sexe,d<span class="sc">$</span>cinema))</span>
+<span id="cb100-48"><a href="#cb100-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-49"><a href="#cb100-49" aria-hidden="true" tabindex="-1"></a><span class="co">#Test d&#39;indépendance - Test exact de Fisher</span></span>
+<span id="cb100-50"><a href="#cb100-50" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(<span class="fu">table</span>(d<span class="sc">$</span>sexe,d<span class="sc">$</span>cinema))</span>
+<span id="cb100-51"><a href="#cb100-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-52"><a href="#cb100-52" aria-hidden="true" tabindex="-1"></a><span class="co">#Test de normalité - Shapiro-Wilk</span></span>
+<span id="cb100-53"><a href="#cb100-53" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(iris<span class="sc">$</span>Sepal.Width)</span>
+<span id="cb100-54"><a href="#cb100-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-55"><a href="#cb100-55" aria-hidden="true" tabindex="-1"></a><span class="co">#Test d&#39;égalité de distribution - Kolmogorov - Smirnov</span></span>
+<span id="cb100-56"><a href="#cb100-56" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(iris<span class="sc">$</span>Petal.Length, iris<span class="sc">$</span>Sepal.Length)</span></code></pre></div>
+</div>
+</div>
+
+<div class="col-xs-2">
+
+
+</div>
+</div>
+	
+
+
+</div>
+</div>
+
+ <script>
+    $(document).ready(function () {
+	// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-striped table-hover');
+	
+		var images = $('.pages img');
+	images.filter(function() {
+	    if ($(this).parent().attr("class") == "figure") {
+		return(false)
+	    } else {
+		return(true);
+	    }
+	}).wrap("<div class='figure'></div>");
+	images.addClass("image-thumb").wrap("<div class='panel-body'></div>");
+	$('.figure p.caption').wrap("<div class='panel-footer'></div>");
+	$('.figure').addClass('panel panel-default');
+	
+		$('.pages img').addClass("image-lb");
+	$('.pages').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+            delegate: '.image-lb',
+	    gallery: {enabled: false },
+            removalDelay: 500,
+            callbacks: {
+		beforeOpen: function() {
+                    // just a hack that adds mfp-anim class to markup
+                    this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+		}
+            },
+            mainClass: 'mfp-move-from-top',
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	
+	  
+	$('#toc ul li').first().addClass("active");
+	$('#toc ul li').attr("data-target", function() {
+            return($(this).children("a").attr("href"));
+	})
+	$('body .section.level1').first().addClass("active");
+	$('body .section.level1').not('.active').hide();
+	
+	$('#toc a[href*="#"], a[href^="#"]').click(function() {
+	    var id = $(this).attr("href");
+	    if (id === "#") return;
+	    if (id.substring(0, 8) === "#dyntab-") return;
+	    // Menu
+	    var menu_entry = $(".menu li[data-target='"+id+"']");
+	    if (menu_entry.length == 0) {
+		window.location.hash = id;
+		return;
+	    }
+	    menu_entry.addClass("active");
+	    $(".menu li").not(menu_entry).removeClass("active"); 
+	    toggle_page(id);
+	});
+
+	function toggle_page(id) {
+	    $(".page").not(page).removeClass("active").hide();
+	    window.page = id;
+	    var page = $(window.page);
+	    window.location.hash = window.page;
+	    //$(this).addClass("active");
+	    page.show();
+
+	    var totop = setInterval(function () {
+		$(".pages").animate({scrollTop: 0}, 0);
+	    }, 10);
+
+	    setTimeout(function () {
+		page.addClass("active");
+		setTimeout(function () {
+		    clearInterval(totop);
+		}, 1000);
+	    }, 100);
+	    
+	    window.dispatchEvent(new Event('resize'));
+	}
+
+
+	$(".menu li").click(function () {
+	    toggle_page($(this).data("target"));
+	    // Menu
+	    if (!$(this).data("target")) return;
+	    if ($(this).is(".active")) return;
+	    $(".menu li").not($(this)).removeClass("active");
+	    $(this).addClass("active");
+	});
+  
+	  
+	window.page = window.location.hash;
+	if (window.page != "") {
+	    $(".menu").find("li[data-target=" + window.page + "]").trigger("click");
+	}
+	/* init material bootstrap js */
+	$.material.init();
+    });
+ </script>
+
+
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+ <script>
+   (function () {
+       var script = document.createElement("script");
+       script.type = "text/javascript";
+       script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+       document.getElementsByTagName("head")[0].appendChild(script);
+   })();
+ </script>
+ 
+</body>
+</html>

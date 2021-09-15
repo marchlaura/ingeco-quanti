@@ -26,7 +26,15 @@ navbar:
         - text: "Donnees manquantes"
           href: missing.html
         - text: "Modifier-Ajouter colonne"
-          href: decrire.html          
+          href: decrire.html     
+    - text : "Presentation Données"
+      menu:
+        - text: "Tableaux"
+          href: decrire.html    
+    - text : "Stat descriptive"
+      menu:
+        - text: "Tests"
+          href: decrire.html
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<laura.march@ird.fr>

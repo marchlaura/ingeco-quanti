@@ -47,3 +47,6 @@ coller au mieux à vos besoins :
 **Prérequis** : sur ce site, je ne reviens pas sur l'installation de R
 et RStudio et je considère que mes lecteur.trice.s sont familier.e.s de
 l'environnement RStudio
+
+**Lien exo Kobo**
+https://nuage.osupytheas.fr/s/2DDGBADN53qHycn
