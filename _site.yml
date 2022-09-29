@@ -33,8 +33,10 @@ navbar:
           href: decrire.html    
     - text : "Stat descriptive"
       menu:
-        - text: "Tests"
+        - text: "Decrire ses données"
           href: decrire.html
+        - text: "Tests"
+          href: test.html
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<laura.march@ird.fr>
