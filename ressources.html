@@ -13,8 +13,8 @@
 
 <title>Liste de ressources R</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -66,6 +66,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -238,7 +242,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -254,7 +258,7 @@ $(document).ready(function () {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Start
      
     <span class="caret"></span>
@@ -272,7 +276,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Préparation Données
      
     <span class="caret"></span>
@@ -299,7 +303,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Presentation Données
      
     <span class="caret"></span>
@@ -311,14 +315,17 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Stat descriptive
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="decrire.html">Tests</a>
+      <a href="decrire.html">Decrire ses données</a>
+    </li>
+    <li>
+      <a href="test.html">Tests</a>
     </li>
   </ul>
 </li>
@@ -354,14 +361,20 @@ $(document).ready(function () {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p><strong>Tutoriel pour les étudiant.e.s en écologie - très complet</strong></p>
+<p><strong>Tutoriel pour les étudiant.e.s en écologie - très
+complet</strong></p>
 <ul>
-<li><a href="https://mtes-mct.github.io/parcours-r/" class="uri">https://mtes-mct.github.io/parcours-r/</a></li>
+<li><a href="https://mtes-mct.github.io/parcours-r/"
+class="uri">https://mtes-mct.github.io/parcours-r/</a></li>
 </ul>
-<p><strong>Tutoriel et vidéos youtube - plus orienté sciences sociales</strong></p>
+<p><strong>Tutoriel et vidéos youtube - plus orienté sciences
+sociales</strong></p>
 <ul>
-<li><p><a href="https://larmarange.github.io/analyse-R/" class="uri">https://larmarange.github.io/analyse-R/</a></p></li>
-<li><p><a href="https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r" class="uri">https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r</a></p></li>
+<li><p><a href="https://larmarange.github.io/analyse-R/"
+class="uri">https://larmarange.github.io/analyse-R/</a></p></li>
+<li><p><a
+href="https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r"
+class="uri">https://www.youtube.com/playlist?list=PLpCZm6o8iM9c0Na6v3CVANv34adYeiO3r</a></p></li>
 </ul>
 <p><strong>Ressourcerie R</strong></p>
 <ul>
@@ -369,21 +382,34 @@ $(document).ready(function () {
 </ul>
 <p><strong>Blogs pour les curieux.ses</strong></p>
 <ul>
-<li><p><a href="http://perso.ens-lyon.fr/lise.vaudor/" class="uri">http://perso.ens-lyon.fr/lise.vaudor/</a></p></li>
-<li><p><a href="https://delladata.fr/liste-des-articles-du-blog/" class="uri">https://delladata.fr/liste-des-articles-du-blog/</a></p></li>
+<li><p><a href="http://perso.ens-lyon.fr/lise.vaudor/"
+class="uri">http://perso.ens-lyon.fr/lise.vaudor/</a></p></li>
+<li><p><a href="https://delladata.fr/liste-des-articles-du-blog/"
+class="uri">https://delladata.fr/liste-des-articles-du-blog/</a></p></li>
 </ul>
-<p><strong>Graphiques</strong> (codes à copier/coller, très pratique)</p>
+<p><strong>Graphiques</strong> (codes à copier/coller, très
+pratique)</p>
 <ul>
-<li><a href="https://www.r-graph-gallery.com/" class="uri">https://www.r-graph-gallery.com/</a></li>
+<li><a href="https://www.r-graph-gallery.com/"
+class="uri">https://www.r-graph-gallery.com/</a></li>
 </ul>
 <p><strong>Pense-bête - Cheatsheets</strong></p>
 <ul>
-<li><a href="https://www.rstudio.com/resources/cheatsheets/" class="uri">https://www.rstudio.com/resources/cheatsheets/</a></li>
+<li><a href="https://www.rstudio.com/resources/cheatsheets/"
+class="uri">https://www.rstudio.com/resources/cheatsheets/</a></li>
 </ul>
 <p><strong>Livres en français à emprunter dans mon bureau</strong></p>
 <ul>
-<li><p>Husson, François. 2018. <strong>R pour la statistique et la science des données</strong>. Pratique de la statistique. Rennes: Presses universitaires de Rennes. <a href="https://r-stat-sc-donnees.github.io/" class="uri">voir ici</a></p></li>
-<li><p>Husson, François, Sébastien Lê, et Jérôme Pagès. 2016. <strong>Analyse de données avec R</strong>. 2e éd. revue et Augmentée. Pratique de la statistique. Rennes: Presses universitaires de Rennes. <a href="http://math.agrocampus-ouest.fr/infoglueDeliverLive/enseignement/support2cours/livres/ana.do.R" class="uri">voir là</a></p></li>
+<li><p>Husson, François. 2018. <strong>R pour la statistique et la
+science des données</strong>. Pratique de la statistique. Rennes:
+Presses universitaires de Rennes. <a
+href="https://r-stat-sc-donnees.github.io/" class="uri">voir
+ici</a></p></li>
+<li><p>Husson, François, Sébastien Lê, et Jérôme Pagès. 2016.
+<strong>Analyse de données avec R</strong>. 2e éd. revue et Augmentée.
+Pratique de la statistique. Rennes: Presses universitaires de Rennes. <a
+href="http://math.agrocampus-ouest.fr/infoglueDeliverLive/enseignement/support2cours/livres/ana.do.R"
+class="uri">voir là</a></p></li>
 </ul>
 
 

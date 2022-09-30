@@ -13,8 +13,8 @@
 
 <title>conversion.knit</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -69,6 +69,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -314,7 +318,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -330,7 +334,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Start
      
     <span class="caret"></span>
@@ -348,7 +352,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Préparation Données
      
     <span class="caret"></span>
@@ -375,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Presentation Données
      
     <span class="caret"></span>
@@ -387,14 +391,17 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Stat descriptive
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="decrire.html">Tests</a>
+      <a href="decrire.html">Decrire ses données</a>
+    </li>
+    <li>
+      <a href="test.html">Tests</a>
     </li>
   </ul>
 </li>
@@ -432,7 +439,11 @@ Conversion de données
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
-<p>Les données importées depuis Excel sont le plus souvent soit du texte, soit des données numériques soit des dates. Il convient de vérifier la structure des données importées et de les convertir si besoin. Des données numériques ou des dates ont pu être interprétées en texte par exemple.</p>
+<p>Les données importées depuis Excel sont le plus souvent soit du
+texte, soit des données numériques soit des dates. Il convient de
+vérifier la structure des données importées et de les convertir si
+besoin. Des données numériques ou des dates ont pu être interprétées en
+texte par exemple.</p>
 <div id="type-des-données-dun-tableau-str" class="section level1">
 <h1>Type des données d’un tableau : str()</h1>
 <p>La fonction str() renvoie le type des variables de votre tableau.</p>
@@ -462,13 +473,19 @@ Conversion de données
 <li>[librairie tidyverse - forcats] as_factor(), factor()</li>
 <li>[librairie lubridate] ymd(), dmy(), mdy()</li>
 </ul>
-<p>Je créé des données fictives possiblement issues de Excel avec les problèmes les plus couramment rencontrés.</p>
+<p>Je créé des données fictives possiblement issues de Excel avec les
+problèmes les plus couramment rencontrés.</p>
 <ul>
-<li>La variable identifiant contient une donnée manquante NULL ce qui fait qu’au moment de l’import, la variable est considérée comme du texte.<br />
+<li>La variable identifiant contient une donnée manquante NULL ce qui
+fait qu’au moment de l’import, la variable est considérée comme du
+texte.<br />
 </li>
-<li>Les dates de naissances ont été importées en texte et non en date.<br />
+<li>Les dates de naissances ont été importées en texte et non en
+date.<br />
 </li>
-<li>La taille a été importées en texte à cause de la virgule qui sépare les décimales. Dans R, le séparateur de décimal est un point, il n’a donc pas reconnu la variable comme contenant du numeric.</li>
+<li>La taille a été importées en texte à cause de la virgule qui sépare
+les décimales. Dans R, le séparateur de décimal est un point, il n’a
+donc pas reconnu la variable comme contenant du numeric.</li>
 </ul>
 <pre class="r klippy"><code>library(tidyverse)
 fic_excel_fictif &lt;- 
@@ -480,7 +497,7 @@ fic_excel_fictif &lt;-
     ville=c(&quot;Montpellier&quot;,&quot;Marseille&quot;,&quot;Marseille&quot;,&quot;Paris&quot;,&quot;Lyon&quot;)
   )
 fic_excel_fictif</code></pre>
-<pre><code>## # A tibble: 5 x 5
+<pre><code>## # A tibble: 5 × 5
 ##   id     sexe ddn        taille ville      
 ##   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
 ## 1 1         1 01/01/2020 1,23   Montpellier
@@ -489,7 +506,7 @@ fic_excel_fictif</code></pre>
 ## 4 4         2 01/05/2020 1,32   Paris      
 ## 5 5         1 01/06/2020 1,12   Lyon</code></pre>
 <pre class="r klippy"><code>str(fic_excel_fictif)</code></pre>
-<pre><code>## tibble [5 x 5] (S3: tbl_df/tbl/data.frame)
+<pre><code>## tibble [5 × 5] (S3: tbl_df/tbl/data.frame)
 ##  $ id    : chr [1:5] &quot;1&quot; &quot;2&quot; &quot;NULL&quot; &quot;4&quot; ...
 ##  $ sexe  : num [1:5] 1 1 2 2 1
 ##  $ ddn   : chr [1:5] &quot;01/01/2020&quot; &quot;01/02/2020&quot; &quot;02/01/2020&quot; &quot;01/05/2020&quot; ...
@@ -497,12 +514,16 @@ fic_excel_fictif</code></pre>
 ##  $ ville : chr [1:5] &quot;Montpellier&quot; &quot;Marseille&quot; &quot;Marseille&quot; &quot;Paris&quot; ...</code></pre>
 <div id="exemple-1-texte-vers-entier" class="section level2">
 <h2>Exemple 1 : texte vers entier</h2>
-<p>NB : la fonction <code>mutate</code> permet de modifier une variable / colonne ou d’ajouter une nouvelle variable/colonne.<br />
+<p>NB : la fonction <code>mutate</code> permet de modifier une variable
+/ colonne ou d’ajouter une nouvelle variable/colonne.<br />
 Commentaire code :</p>
 <ul>
-<li>ligne na_if : On indique que la valeur texte NULL doit être remplacée par une données manquante</li>
-<li>ligne as.integer : On convertit la variable id avec la fonction as.integer(). La nouvelle variable s’appelle id_numeric</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne na_if : On indique que la valeur texte NULL doit être
+remplacée par une données manquante</li>
+<li>ligne as.integer : On convertit la variable id avec la fonction
+as.integer(). La nouvelle variable s’appelle id_numeric</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
   fic_excel_fictif %&gt;% 
@@ -510,7 +531,7 @@ Commentaire code :</p>
   mutate(id_numeric=as.integer(id)) %&gt;%
   relocate(id,id_numeric)       
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 6
+<pre><code>## # A tibble: 5 × 6
 ##   id    id_numeric  sexe ddn        taille ville      
 ##   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
 ## 1 1              1     1 01/01/2020 1,23   Montpellier
@@ -524,8 +545,10 @@ fic_excel_fictif_modif</code></pre>
 <p>Commentaire code :</p>
 <ul>
 <li>ligne str_replace : On remplace les virgules par des points</li>
-<li>ligne as.integer : On convertit la variable taille avec la fonction as.integer(). La nouvelle variable s’appelle taille_numeric</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne as.integer : On convertit la variable taille avec la fonction
+as.integer(). La nouvelle variable s’appelle taille_numeric</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
   fic_excel_fictif %&gt;% 
@@ -534,7 +557,7 @@ fic_excel_fictif_modif</code></pre>
   relocate(taille,taille_numeric)               
 
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 6
+<pre><code>## # A tibble: 5 × 6
 ##   taille taille_numeric id     sexe ddn        ville      
 ##   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
 ## 1 1.23                1 1         1 01/01/2020 Montpellier
@@ -545,11 +568,16 @@ fic_excel_fictif_modif</code></pre>
 </div>
 <div id="exemple-3-texte-vers-date" class="section level2">
 <h2>Exemple 3 : texte vers date</h2>
-<p>NB : dans l’exemple on utilise la fonction dmy() car les dates texte sont sous le format JJ/MM/AAAA. Pour un format américain MM/JJ/AAAA, on utiliserait la fonction mdy(). Pour un format ‘à l’envers’ AAAA/MM/JJ on utiliserait ymd().</p>
+<p>NB : dans l’exemple on utilise la fonction dmy() car les dates texte
+sont sous le format JJ/MM/AAAA. Pour un format américain MM/JJ/AAAA, on
+utiliserait la fonction mdy(). Pour un format ‘à l’envers’ AAAA/MM/JJ on
+utiliserait ymd().</p>
 <p>Commentaire code :</p>
 <ul>
-<li>ligne dmy : On convertit la variable ddn avec la fonction dmy(). La nouvelle variable s’appelle ddn_format</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne dmy : On convertit la variable ddn avec la fonction dmy(). La
+nouvelle variable s’appelle ddn_format</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>library(lubridate)
 fic_excel_fictif_modif &lt;- 
@@ -558,7 +586,7 @@ fic_excel_fictif_modif &lt;-
   relocate(ddn,ddn_format)
 
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 6
+<pre><code>## # A tibble: 5 × 6
 ##   ddn        ddn_format id     sexe taille ville      
 ##   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;      
 ## 1 01/01/2020 2020-01-01 1         1 1,23   Montpellier
@@ -569,12 +597,17 @@ fic_excel_fictif_modif</code></pre>
 </div>
 <div id="exemple-4-texte-vers-facteur" class="section level2">
 <h2>Exemple 4 : texte vers facteur</h2>
-<p>NB : on convertit rarement une variable texte en facteur car R considère par défaut une variable texte comme une variable catégorielle. Mais cela peut être utile si on veut changer une valeur de référence dans un modèle logistic par exemple.</p>
+<p>NB : on convertit rarement une variable texte en facteur car R
+considère par défaut une variable texte comme une variable catégorielle.
+Mais cela peut être utile si on veut changer une valeur de référence
+dans un modèle logistic par exemple.</p>
 <p>Commentaire code :</p>
 <ul>
 <li>ligne as_factor : On convertit la variable ville en facteur</li>
-<li>ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne fct_relevel : On change la valeur de référence (utile pour les
+modèles logistiques)</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
   fic_excel_fictif %&gt;% 
@@ -583,7 +616,7 @@ fic_excel_fictif_modif</code></pre>
   relocate(ville,ville_facteur,ville_facteur_ref) 
 
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 7
+<pre><code>## # A tibble: 5 × 7
 ##   ville       ville_facteur ville_facteur_ref id     sexe ddn        taille
 ##   &lt;chr&gt;       &lt;fct&gt;         &lt;fct&gt;             &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; 
 ## 1 Montpellier Montpellier   Montpellier       1         1 01/01/2020 1,23  
@@ -594,12 +627,17 @@ fic_excel_fictif_modif</code></pre>
 </div>
 <div id="exemple-5-entier-vers-facteur" class="section level2">
 <h2>Exemple 5 : entier vers facteur</h2>
-<p>NB : la conversion de la variable numeric en facteur va permettre d’indiquer à R de considérer la variable comme une variable catégorielle et non comme une variable numéric.</p>
+<p>NB : la conversion de la variable numeric en facteur va permettre
+d’indiquer à R de considérer la variable comme une variable catégorielle
+et non comme une variable numéric.</p>
 <p>Commentaire code :</p>
 <ul>
-<li>ligne factor : On convertit la variable sexe en facteur et on ajoute les labels associés aux valeurs</li>
-<li>ligne fct_relevel : On change la valeur de référence (utile pour les modèles logistiques)</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne factor : On convertit la variable sexe en facteur et on ajoute
+les labels associés aux valeurs</li>
+<li>ligne fct_relevel : On change la valeur de référence (utile pour les
+modèles logistiques)</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
   fic_excel_fictif %&gt;% 
@@ -608,7 +646,7 @@ fic_excel_fictif_modif</code></pre>
   relocate(sexe,sexe_facteur,sexe_facteur_ref) 
 
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 7
+<pre><code>## # A tibble: 5 × 7
 ##    sexe sexe_facteur sexe_facteur_ref id    ddn        taille ville      
 ##   &lt;dbl&gt; &lt;fct&gt;        &lt;fct&gt;            &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;      
 ## 1     1 femme        femme            1     01/01/2020 1,23   Montpellier
@@ -617,12 +655,15 @@ fic_excel_fictif_modif</code></pre>
 ## 4     2 homme        homme            4     01/05/2020 1,32   Paris      
 ## 5     1 femme        femme            5     01/06/2020 1,12   Lyon</code></pre>
 </div>
-<div id="exemple-6-facteur-ou-numeric-vers-texte-as.character" class="section level2">
+<div id="exemple-6-facteur-ou-numeric-vers-texte-as.character"
+class="section level2">
 <h2>Exemple 6 : facteur ou numeric vers texte –&gt; as.character()</h2>
 <p>Commentaire code :</p>
 <ul>
-<li>ligne as.character : On convertit la variable sexe_facteur en texte</li>
-<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte à côte l’ancienne et la nouvelle variable</li>
+<li>ligne as.character : On convertit la variable sexe_facteur en
+texte</li>
+<li>ligne relocate : On réordonne l’ordre des variables pour mettre côte
+à côte l’ancienne et la nouvelle variable</li>
 </ul>
 <pre class="r klippy"><code>fic_excel_fictif_modif &lt;- 
   fic_excel_fictif_modif %&gt;% 
@@ -630,14 +671,14 @@ fic_excel_fictif_modif</code></pre>
   relocate(sexe,sexe_texte,sexe_facteur)
 
 fic_excel_fictif_modif</code></pre>
-<pre><code>## # A tibble: 5 x 8
-##    sexe sexe_texte sexe_facteur sexe_facteur_ref id    ddn       taille ville   
-##   &lt;dbl&gt; &lt;chr&gt;      &lt;fct&gt;        &lt;fct&gt;            &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;   
-## 1     1 femme      femme        femme            1     01/01/20~ 1,23   Montpel~
-## 2     1 femme      femme        femme            2     01/02/20~ 1,22   Marseil~
-## 3     2 homme      homme        homme            NULL  02/01/20~ 1,43   Marseil~
-## 4     2 homme      homme        homme            4     01/05/20~ 1,32   Paris   
-## 5     1 femme      femme        femme            5     01/06/20~ 1,12   Lyon</code></pre>
+<pre><code>## # A tibble: 5 × 8
+##    sexe sexe_texte sexe_facteur sexe_facteur_ref id    ddn        taille ville  
+##   &lt;dbl&gt; &lt;chr&gt;      &lt;fct&gt;        &lt;fct&gt;            &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;  
+## 1     1 femme      femme        femme            1     01/01/2020 1,23   Montpe…
+## 2     1 femme      femme        femme            2     01/02/2020 1,22   Marsei…
+## 3     2 homme      homme        homme            NULL  02/01/2020 1,43   Marsei…
+## 4     2 homme      homme        homme            4     01/05/2020 1,32   Paris  
+## 5     1 femme      femme        femme            5     01/06/2020 1,12   Lyon</code></pre>
 </div>
 </div>
 

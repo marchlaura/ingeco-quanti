@@ -13,8 +13,8 @@
 
 <title>selection.knit</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -69,6 +69,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -314,7 +318,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -330,7 +334,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Start
      
     <span class="caret"></span>
@@ -348,7 +352,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Préparation Données
      
     <span class="caret"></span>
@@ -375,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Presentation Données
      
     <span class="caret"></span>
@@ -387,14 +391,17 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Stat descriptive
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="decrire.html">Tests</a>
+      <a href="decrire.html">Decrire ses données</a>
+    </li>
+    <li>
+      <a href="test.html">Tests</a>
     </li>
   </ul>
 </li>
@@ -433,9 +440,11 @@ Selectionner vos variables
   addKlippy('right', 'top', 'auto', '1', 'Click to copy', 'Done');
 </script>
 <pre class="r klippy"><code>library(tidyverse)</code></pre>
-<p>Le package tidyverse fournit un ensemble de fonction pour sélectionner, renommer et réordonner les colonnes d’un tableau.</p>
+<p>Le package tidyverse fournit un ensemble de fonction pour
+sélectionner, renommer et réordonner les colonnes d’un tableau.</p>
 <p><strong>Utilisation du pipe : %&gt;%</strong></p>
-<p><span class="math display">\[ f(a) &lt;=&gt; a \,\text{ %&gt;% }\, f()\]</span></p>
+<p><span class="math display">\[ f(a) &lt;=&gt; a \,\text{ %&gt;% }\,
+f()\]</span></p>
 <p>Exemple :</p>
 <pre class="r klippy"><code>colnames(iris) # Nom des variables</code></pre>
 <p>est équivalent à</p>
@@ -449,28 +458,36 @@ colnames(iris) # Nom des variables</code></pre>
 </div>
 <div id="selectionner-select" class="section level1">
 <h1>Selectionner : select()</h1>
-<p>On sélectionne les variables Sepal.Length,Sepal.Width et Species. La table obtenue est affectée à l’objet <code>iris_selection</code></p>
+<p>On sélectionne les variables Sepal.Length,Sepal.Width et Species. La
+table obtenue est affectée à l’objet <code>iris_selection</code></p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% select(Species,Sepal.Length,Sepal.Width)
 head(iris_selection)</code></pre>
-<p>On peut aussi garder toutes les variables et indiquer la liste des variables à supprimer grâce à l’opérateur de soustraction.</p>
+<p>On peut aussi garder toutes les variables et indiquer la liste des
+variables à supprimer grâce à l’opérateur de soustraction.</p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% select(-Sepal.Length,-Sepal.Width)
 head(iris_selection)</code></pre>
 </div>
 <div id="renommer-rename" class="section level1">
 <h1>Renommer : rename()</h1>
-<p>On renomme la variable Sepal.Length. Son nouveau nom est longueur_sepal. La table obtenue est affectée à l’objet <code>iris_selection</code></p>
+<p>On renomme la variable Sepal.Length. Son nouveau nom est
+longueur_sepal. La table obtenue est affectée à l’objet
+<code>iris_selection</code></p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% rename(longueur_sepal=Sepal.Length)
 head(iris_selection)</code></pre>
-<p>Si le nom d’une variable contient un espace ou des caractères spéciaux, utiliser les guillemets.</p>
+<p>Si le nom d’une variable contient un espace ou des caractères
+spéciaux, utiliser les guillemets.</p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% rename(&#39;longueur des petales&#39;=Sepal.Length)
 head(iris_selection)</code></pre>
 </div>
 <div id="réordonner-relocate" class="section level1">
 <h1>Réordonner : relocate()</h1>
-<p>Pour changer l’ordre des variables, on peut utiliser la fonction <code>relocate</code>.</p>
-<p><em>Exemple 1 : On place la variable Species en première position</em></p>
+<p>Pour changer l’ordre des variables, on peut utiliser la fonction
+<code>relocate</code>.</p>
+<p><em>Exemple 1 : On place la variable Species en première
+position</em></p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% relocate(Species,1) </code></pre>
-<p><em>Exemple 2 : On place les variables Species et Sepal.Length après la variable Petal.Length</em></p>
+<p><em>Exemple 2 : On place les variables Species et Sepal.Length après
+la variable Petal.Length</em></p>
 <pre class="r klippy"><code>iris_selection &lt;- iris %&gt;% relocate(Species,Sepal.Length,.after=Petal.Length) </code></pre>
 </div>
 

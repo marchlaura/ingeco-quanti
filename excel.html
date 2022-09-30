@@ -13,8 +13,8 @@
 
 <title>excel.knit</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -69,6 +69,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -89,6 +90,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -314,7 +318,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -330,7 +334,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Start
      
     <span class="caret"></span>
@@ -348,7 +352,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Préparation Données
      
     <span class="caret"></span>
@@ -375,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Presentation Données
      
     <span class="caret"></span>
@@ -387,14 +391,17 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Stat descriptive
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="decrire.html">Tests</a>
+      <a href="decrire.html">Decrire ses données</a>
+    </li>
+    <li>
+      <a href="test.html">Tests</a>
     </li>
   </ul>
 </li>
@@ -434,38 +441,57 @@ Excel : import - export
 </script>
 <div id="préparer-son-fichier-excel" class="section level2">
 <h2>Préparer son fichier Excel</h2>
-<p>Pour faciliter le travail dans R de lecture de vos données dans Excel, quelques recommandations :<br />
-- des noms de colonnes courts, éviter les espaces et caractères spéciaux (les accents en particulier)<br />
+<p>Pour faciliter le travail dans R de lecture de vos données dans
+Excel, quelques recommandations :<br />
+- des noms de colonnes courts, éviter les espaces et caractères spéciaux
+(les accents en particulier)<br />
 - mettre une seule information par colonne<br />
 - mettre une seule observation par ligne<br />
-- si vous avez plusieurs niveaux d’informations, faire deux onglets (ex : un onglet pour les caractéristiques de vos relevés floristiques, un onglet pour les caractéristiques des parcelles)<br />
+- si vous avez plusieurs niveaux d’informations, faire deux onglets (ex
+: un onglet pour les caractéristiques de vos relevés floristiques, un
+onglet pour les caractéristiques des parcelles)<br />
 - éviter de mixer du texte et des chiffres dans une même colonne<br />
 - évitez les couleurs, elles ne seront pas lues dans R<br />
-- vous pouvez ajouter un onglet “Informations” ou “A LIRE” dans votre fichier Excel pour donner des informations complémentaires pour la bonne compréhension de vos données<br />
+- vous pouvez ajouter un onglet “Informations” ou “A LIRE” dans votre
+fichier Excel pour donner des informations complémentaires pour la bonne
+compréhension de vos données<br />
 - éviter les cellules fusionnées</p>
 </div>
 <div id="importer-son-fichier-dans-r" class="section level2">
 <h2>Importer son fichier dans R</h2>
 <pre class="r klippy"><code>library(readxl) # Import de la librairie
 read_excel(&quot;C:/Users//Projet R/Donnees/monfichierexcel.xlsx&quot;,sheet=&quot;Feuil1&quot;) </code></pre>
-<p>NB : mettre des slashs(/) pour séparer les dossiers et non des anti-slashs () pour Windows</p>
+<p>NB : mettre des slashs(/) pour séparer les dossiers et non des
+anti-slashs () pour Windows</p>
 </div>
 <div id="exporter-un-tableau-r-dans-excel" class="section level2">
 <h2>Exporter un tableau R dans Excel</h2>
-<p>Ici, on exporte le jeu de données <code>iris</code> installé par défaut dans R vers Excel.</p>
+<p>Ici, on exporte le jeu de données <code>iris</code> installé par
+défaut dans R vers Excel.</p>
 <pre class="r klippy"><code>head(iris) #Visualise les 6 premières lignes du tableau iris
 library(writexl) # Import de la librairie
 write_excel(iris,&quot;C:/Users/Projet R/Donnees/donnees_iris_de_R.xlsx&quot;)</code></pre>
-<p>NB1 : mettre des slashs(/) pour séparer les dossiers et non des anti-slashs () pour Windows<br />
-NB2 : Ici on exporte un jeu de données de R mais on peut exporter n’importe quel tableau de données (un tableau de résultat d’une régression par exemple) pourvu qu’il soit stocké dans un objet R approprié (dataframe, tibble…)</p>
+<p>NB1 : mettre des slashs(/) pour séparer les dossiers et non des
+anti-slashs () pour Windows<br />
+NB2 : Ici on exporte un jeu de données de R mais on peut exporter
+n’importe quel tableau de données (un tableau de résultat d’une
+régression par exemple) pourvu qu’il soit stocké dans un objet R
+approprié (dataframe, tibble…)</p>
 </div>
-<div id="le-pakage-xlsx-fonctionnalités-importexport-plus-avancées" class="section level2">
+<div id="le-pakage-xlsx-fonctionnalités-importexport-plus-avancées"
+class="section level2">
 <h2>Le pakage xlsx : fonctionnalités import/export plus avancées</h2>
-<p>Le paquet <code>xlsx</code> est également très utilisé et apporte davantage de fonctionnalités mais il vous faudra installer des dépendances (suivre les instructions du terminal), en particulier Java, ce qui provoque parfois des difficultés.</p>
+<p>Le paquet <code>xlsx</code> est également très utilisé et apporte
+davantage de fonctionnalités mais il vous faudra installer des
+dépendances (suivre les instructions du terminal), en particulier Java,
+ce qui provoque parfois des difficultés.</p>
 <p>Exemple :<br />
 1. On importe la librairie <code>xlsx</code><br />
-2. On exporte les données <code>iris</code> dans le fichier Excel “donnéees_de_R.xlsx” dans l’onglet “iris”<br />
-3. On ajoute les données <code>cars</code> dans le fichier Excel “donnéees_de_R.xlsx” dans l’onglet “cars” sans écraser le fichier initial grâce à l’option <code>append=TRUE</code></p>
+2. On exporte les données <code>iris</code> dans le fichier Excel
+“donnéees_de_R.xlsx” dans l’onglet “iris”<br />
+3. On ajoute les données <code>cars</code> dans le fichier Excel
+“donnéees_de_R.xlsx” dans l’onglet “cars” sans écraser le fichier
+initial grâce à l’option <code>append=TRUE</code></p>
 <pre class="r klippy"><code>library(xlsx) # Import de la librairie
 write.xlsx2(iris,&quot;C:/Users/Projet R/Donnees/donnees_de_R.xlsx&quot;,sheetName=&quot;iris&quot;) 
 write.xlsx2(cars,&quot;C:/Users/Projet R/Donnees/donnees_R.xlsx&quot;,sheetName=&quot;cars&quot;,append=TRUE)</code></pre>
