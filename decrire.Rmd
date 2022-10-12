@@ -1,5 +1,5 @@
 ---
-title: "<center>Ajouter ou modifier une colonne / variable</center>"
+title: "Statistiques descriptives : moyenne, médiane,..."
 output: 
   html_document:
     toc: true
@@ -9,8 +9,442 @@ output:
 ```{r setup, include=T, echo=F}
 library(klippy)
 klippy::klippy(position = c('top', 'right'),tooltip_message = 'Click to copy', tooltip_success = 'Done')
-knitr::opts_chunk$set(echo = TRUE,class.source='klippy',eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE,class.source='klippy',message = F,warning = F)
+```
+
+# Librairies
+
+On utilise ici la librairie tidyverse et gtsummary
+
+```{r}
+library(tidyverse)
+library(gtsummary)
 ```
 
 
-WORK IN PROGRESS...
+# Import du jeu de données and_vertebrates
+
+La documentation est ici : <https://lter.github.io/lterdatasampler/index.html>
+
+```{r}
+library(lterdatasampler)
+```
+
+Il s'agit de mesures de tailles et de poids effectuées sur des invertébrés (Truites fardées côtière et Salamandres) dans une forêt de l'Oregon aux USA.\
+Dans cette section, nous utiliserons les variables du jeu de données **and_vertebrates** contenu dans le package lterdatasampler :\
+- *section* : type de forêt, CC= clear cut forest,OG = upstream old growth coniferous forest\
+- *weight_g* : poids en gramme\
+- *species* : nom de l'espèce capturé (Cutthroat trout ; Coastal giant salamander ; Cascade torrent salamander)
+
+# Décrire une variable continue
+
+On s'intéresse au poids des invertébrés, la variable *weight_g*. On va calculer la moyenne, l'écart-type, le minimum, le premier quartile, la médiane, le troisième quartile, le maximum, le nombre d'observation, le nombre de données renseignées et le nombre de données manquantes.
+
+## Codes {.tabset}
+
+### Une commande par indicateur [base R]
+
+```{r}
+mean(and_vertebrates$weight_g,na.rm = T) # Moyenne
+sd(and_vertebrates$weight_g,na.rm = T) # Ecart-Type
+min(and_vertebrates$weight_g,na.rm = T) # Min
+quantile(and_vertebrates$weight_g,probs=0.25,na.rm = T) # Q1
+quantile(and_vertebrates$weight_g,probs=0.5,na.rm = T) # Médiane
+quantile(and_vertebrates$weight_g,probs=0.75,na.rm = T) # Q3
+max(and_vertebrates$weight_g,na.rm = T) # Max
+length(and_vertebrates$weight_g) # Nombre valeur
+sum(!is.na(and_vertebrates$weight_g)) #Nombre NON manquant
+sum(is.na(and_vertebrates$weight_g)) #Nombre manquant
+```
+
+### Une commande par indicateur [Tidyverse]
+
+```{r}
+and_vertebrates %>%
+  summarise(
+    moyenne=mean(weight_g,na.rm = T),
+    `écart-type`=sd(weight_g,na.rm = T),
+    minimum=min(weight_g,na.rm = T),
+    q1=quantile(weight_g,na.rm = T,probs=0.25),
+    mediane=quantile(weight_g,na.rm = T,probs=0.55),
+    q3=quantile(weight_g,na.rm = T,probs=0.75),
+    maximum=max(weight_g,na.rm = T),
+    N=n(),
+    n_obs=sum(!is.na(weight_g)),
+    n_miss_obs=sum(is.na(weight_g))
+  )
+```
+
+### En une seule commande
+
+```{r}
+summary(and_vertebrates$weight_g,na.rm = T) # Moyenne
+```
+
+### En joli
+
+```{r}
+# Statistique descritptive de weight_g VERY BEAUTIFUL [librairie gtsummary]
+library(gtsummary)
+and_vertebrates %>%
+  tbl_summary(
+    include = weight_g,
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{N_nonmiss}",
+                                     "{N_miss}",
+                                     "{min}",
+                                     "{p25}",
+                                     "{median}",
+                                     "{p75}",
+                                     "{max}",
+                                     "{mean}",
+                                     "{sd}"),
+    missing = "no"
+  )
+```
+
+### En graphique
+
+```{r}
+ggplot(and_vertebrates) +
+  aes(x="",y=weight_g) +
+  geom_boxplot(width=0.2) +
+  labs(title="Plot of SRF_R per treatment",x="",y="Weight")
+```
+
+# Décrire une variable continue d'un sous-groupe de notre jeu de données
+
+On souhaite maintenant calculer les même indicateurs, la moyenne, l'écartype, et autre indicateur de la variable weight_g mais uniquement pour les invertébrés capturés dans les forêt coupé à blanc ie pour lesquelles la valeur de la variable section est égale à CC pour Clear Cut forest.
+
+## Codes {.tabset}
+
+### Une commande par indicateur [base R]
+
+```{r}
+mean(and_vertebrates$weight_g[and_vertebrates$section=="CC"],na.rm = T) # Moyenne
+sd(and_vertebrates$weight_g[and_vertebrates$section=="CC"],na.rm = T) # Ecart-Type
+min(and_vertebrates$weight_g[and_vertebrates$section=="CC"],na.rm = T) # Min
+quantile(and_vertebrates$weight_g[and_vertebrates$section=="CC"],probs=0.25,na.rm = T) # Q1
+quantile(and_vertebrates$weight_g[and_vertebrates$section=="CC"],probs=0.5,na.rm = T) # Médiane
+quantile(and_vertebrates$weight_g[and_vertebrates$section=="CC"],probs=0.75,na.rm = T) # Q3
+max(and_vertebrates$weight_g[and_vertebrates$section=="CC"],na.rm = T) # Max
+length(and_vertebrates$weight_g[and_vertebrates$section=="CC"]) # Nombre valeur
+sum(!is.na(and_vertebrates$weight_g[and_vertebrates$section=="CC"])) #Nombre NON manquant
+sum(is.na(and_vertebrates$weight_g[and_vertebrates$section=="CC"])) #Nombre manquant
+```
+
+### Une commande par indicateur [Tidyverse]
+
+```{r}
+and_vertebrates %>%
+  filter(section=="CC") %>%
+  summarise(
+    moyenne=mean(weight_g,na.rm = T),
+    `écart-type`=sd(weight_g,na.rm = T),
+    minimum=min(weight_g,na.rm = T),
+    q1=quantile(weight_g,na.rm = T,probs=0.25),
+    mediane=quantile(weight_g,na.rm = T,probs=0.55),
+    q3=quantile(weight_g,na.rm = T,probs=0.75),
+    maximum=max(weight_g,na.rm = T),
+    N=n(),
+    n_obs=sum(!is.na(weight_g)),
+    n_miss_obs=sum(is.na(weight_g))
+  )
+```
+
+### En une seule commande
+
+```{r}
+summary(and_vertebrates$weight_g[and_vertebrates$section=="CC"],na.rm = T) # Moyenne
+```
+
+### En joli
+
+librairie gtsummary
+
+```{r}
+and_vertebrates %>% 
+  filter(section=="CC") %>%
+  tbl_summary(
+    include = weight_g,
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{N_nonmiss}",
+                                     "{N_miss}",
+                                     "{min}",
+                                     "{p25}",
+                                     "{median}",
+                                     "{p75}",
+                                     "{max}",
+                                     "{mean}",
+                                     "{sd}"),
+    missing = "no"
+  ) 
+```
+
+### En graphique
+
+```{r}
+# Boxplot
+and_vertebrates %>% 
+  filter(section=="CC") %>%
+  ggplot() +
+  aes(x="",y=weight_g) +
+  geom_boxplot(width=0.2) +
+  labs(title="Plot of Weight for CC forest",x="",y="Weight")
+```
+
+# Décrire une variable continue en fonction d'une variable catégorielle
+
+On va maintenant décrire le poids des invertébrés en fonction de l'espèce capturé (Cutthroat trout ; Coastal giant salamander ; Cascade torrent salamander) en utilisant la variable *species*.
+
+## Codes {.tabset}
+
+### Une commande par indicateur [base R 1]
+
+```{r}
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = mean,  na.rm = TRUE)  # Moyenne
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = sd,  na.rm = TRUE)  # Ecart-Type
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = min,  na.rm = TRUE) # Min
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = quantile, probs=0.25,  na.rm = TRUE)  # Q1
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = quantile, probs=0.55,  na.rm = TRUE)  # Médiane
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = quantile, probs=0.75,  na.rm = TRUE)  # Q3
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = max,  na.rm = TRUE) # Max
+aggregate(x = and_vertebrates$weight_g, by = list(and_vertebrates$species), FUN = length) # Nombre valeur
+table(and_vertebrates$species[!is.na(and_vertebrates$weight_g)]) #Nombre NON manquant
+table(and_vertebrates$species[is.na(and_vertebrates$weight_g)]) #Nombre manquant
+```
+
+### Une commande par indicateur [base R 2]
+
+```{r}
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = mean,  na.rm = TRUE)  # Moyenne
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = sd,  na.rm = TRUE)  # Ecart-Type
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = min,  na.rm = TRUE) # Min
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = quantile, probs=0.25,  na.rm = TRUE)  # Q1
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = quantile, probs=0.55,  na.rm = TRUE)  # Médiane
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = quantile, probs=0.75,  na.rm = TRUE)  # Q3
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = max,  na.rm = TRUE) # Max
+tapply(and_vertebrates$weight_g, and_vertebrates$species, FUN = length) # Nombre valeur
+table(and_vertebrates$species[!is.na(and_vertebrates$weight_g)]) #Nombre NON manquant
+table(and_vertebrates$species[is.na(and_vertebrates$weight_g)]) #Nombre manquant
+```
+
+### Avec Tidyverse 1
+
+```{r}
+and_vertebrates %>% group_by(species) %>% summarise(mean(weight_g,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(sd(weight_g,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(min(weight_g,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.25,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.5,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.75,na.rm=T))
+and_vertebrates %>% group_by(species) %>% summarise(max(weight_g,na.rm=T))
+and_vertebrates %>% group_by(species) %>% count()  # Nombre valeur
+and_vertebrates %>% group_by(species) %>% summarise(sum(!is.na(weight_g))) #Nombre NON manquant
+and_vertebrates %>% group_by(species) %>% summarise(sum(is.na(weight_g))) #Nombre manquant
+
+```
+
+### Avec Tidyverse 2
+
+```{r}
+and_vertebrates %>%
+  group_by(species) %>% 
+  summarise(mean=mean(weight_g,na.rm=T),
+            sd=sd(weight_g,na.rm=T),
+            min=min(weight_g,na.rm=T),
+            q1=quantile(weight_g,probs=0.25,na.rm=T),
+            mediane=quantile(weight_g,probs=0.5,na.rm=T),
+            q3=quantile(weight_g,probs=0.75,na.rm=T),
+            max=max(weight_g,na.rm=T),
+            N=n(),
+            n=sum(!is.na(weight_g)),
+            missing=sum(is.na(weight_g)))
+
+```
+
+### En une seule commande [base R]
+
+```{r}
+tapply(and_vertebrates$weight_g, and_vertebrates$species, summary)
+```
+
+### En une seule commande [tidyverse]
+
+```{r}
+and_vertebrates %>%  select(weight_g,species) %>%  split(.$species) %>% map(summary)
+```
+
+### En beau
+
+```{r}
+# [librairie gtsummary]
+and_vertebrates %>% 
+  tbl_summary(
+    include = weight_g,
+    by = species,
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{N_nonmiss}",
+                                     "{N_miss}",
+                                     "{min}",
+                                     "{p25}",
+                                     "{median}",
+                                     "{p75}",
+                                     "{max}",
+                                     "{mean}",
+                                     "{sd}"),
+    missing = "no"
+  ) %>%
+  add_overall()
+
+```
+
+### En graphique
+
+```{r}
+and_vertebrates %>% 
+  drop_na(weight_g) %>% 
+  ggplot() +
+  aes(x=species, y=weight_g,color=species) +
+  geom_boxplot() +
+  labs(title="Plot of weight per species",x="species", y = "weight") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+and_vertebrates %>% 
+  drop_na(weight_g) %>% 
+  ggplot() +
+  aes(x=species, y=weight_g,color=species) +
+  geom_boxplot() +
+  labs(title="Plot of weight per species",x="species", y = "weight") +
+  coord_flip() 
+```
+
+# Décrire une variable continue en fonction d'une variable catégorielle d'un sous-groupe de notre jeu de données
+
+On va maintenant décrire le poids des invertébrés en fonction de l'espèce capturé (Cutthroat trout ; Coastal giant salamander ; Cascade torrent salamander) en utilisant la variable *species* mais uniquement pour les invertébrés capturés dans les forêt coupé à blanc ie pour lesquelles la valeur de la variable section est égale à CC pour Clear Cut forest.
+
+## Codes {.tabset}
+
+### Une commande par indicateur [base R 1]
+
+```{r}
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = mean,  na.rm = TRUE)  # Moyenne
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = sd,  na.rm = TRUE)  # Ecart-Type
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = min,  na.rm = TRUE) # Min
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = quantile, probs=0.25,  na.rm = TRUE)  # Q1
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = quantile, probs=0.55,  na.rm = TRUE)  # Médiane
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = quantile, probs=0.75,  na.rm = TRUE)  # Q3
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = max,  na.rm = TRUE) # Max
+aggregate(x = and_vertebrates$weight_g[and_vertebrates$section=="CC"], by = list(and_vertebrates$species[and_vertebrates$section=="CC"]), FUN = length) # Nombre valeur
+table(and_vertebrates$species[and_vertebrates$section=="CC" & !is.na(and_vertebrates$weight_g)]) #Nombre NON manquant
+table(and_vertebrates$species[and_vertebrates$section=="CC" & is.na(and_vertebrates$weight_g)]) #Nombre manquant
+```
+
+### Une commande par indicateur [base R 2]
+
+```{r}
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = mean,  na.rm = TRUE)  # Moyenne
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = sd,  na.rm = TRUE)  # Ecart-Type
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = min,  na.rm = TRUE) # Min
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = quantile, probs=0.25,  na.rm = TRUE)  # Q1
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = quantile, probs=0.55,  na.rm = TRUE)  # Médiane
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = quantile, probs=0.75,  na.rm = TRUE)  # Q3
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = max,  na.rm = TRUE) # Max
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], FUN = length) # Nombre valeur
+table(and_vertebrates$species[and_vertebrates$section=="CC" & !is.na(and_vertebrates$weight_g)]) #Nombre NON manquant
+table(and_vertebrates$species[and_vertebrates$section=="CC" & is.na(and_vertebrates$weight_g)]) #Nombre manquant
+```
+
+### Avec Tidyverse 1
+
+```{r}
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(mean(weight_g,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(sd(weight_g,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(min(weight_g,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.25,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.5,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(quantile(weight_g,probs=0.75,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(max(weight_g,na.rm=T))
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% count()  # Nombre valeur
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(sum(!is.na(weight_g))) #Nombre NON manquant
+and_vertebrates %>% filter(section=="CC") %>% group_by(species) %>% summarise(sum(is.na(weight_g))) #Nombre manquant
+
+```
+
+### Avec Tidyverse 2
+
+```{r}
+and_vertebrates %>%
+  filter(section=="CC") %>%
+  group_by(species) %>% 
+  summarise(mean=mean(weight_g,na.rm=T),
+            sd=sd(weight_g,na.rm=T),
+            min=min(weight_g,na.rm=T),
+            q1=quantile(weight_g,probs=0.25,na.rm=T),
+            mediane=quantile(weight_g,probs=0.5,na.rm=T),
+            q3=quantile(weight_g,probs=0.75,na.rm=T),
+            max=max(weight_g,na.rm=T),
+            N=n(),
+            n=sum(!is.na(weight_g)),
+            missing=sum(is.na(weight_g)))
+
+```
+
+### En une seule commande [base R]
+
+```{r}
+tapply(and_vertebrates$weight_g[and_vertebrates$section=="CC"], and_vertebrates$species[and_vertebrates$section=="CC"], summary)
+```
+
+### En une seule commande [tidyverse]
+
+```{r}
+and_vertebrates %>% filter(section=="CC") %>% select(weight_g,species) %>% split(.$species) %>% map(summary)
+```
+
+### En beau
+
+```{r}
+# [librairie gtsummary]
+and_vertebrates %>% 
+  filter(section=="CC") %>%
+  tbl_summary(
+    include = weight_g,
+    by = species,
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{N_nonmiss}",
+                                     "{N_miss}",
+                                     "{min}",
+                                     "{p25}",
+                                     "{median}",
+                                     "{p75}",
+                                     "{max}",
+                                     "{mean}",
+                                     "{sd}"),
+    missing = "no"
+  ) %>%
+  add_overall()
+
+```
+
+### En graphique
+
+```{r}
+and_vertebrates %>% 
+  filter(section=="CC") %>%
+  drop_na(weight_g) %>% 
+  ggplot() +
+  aes(x=species, y=weight_g,color=species) +
+  geom_boxplot() +
+  labs(title="Plot of weight per species",x="species", y = "weight") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+and_vertebrates %>% 
+  filter(section=="CC") %>%
+  drop_na(weight_g) %>% 
+  ggplot() +
+  aes(x=species, y=weight_g,color=species) +
+  geom_boxplot() +
+  labs(title="Plot of weight per species",x="species", y = "weight") +
+  coord_flip() 
+```
